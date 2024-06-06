@@ -5,17 +5,19 @@ body {
     color: #ffffff;
     display: flex;
     height: 100vh;
+    flex-direction: column;
 }
 
 .container {
     display: flex;
+    flex-direction: column;
     width: 100%;
 }
 
 .sidebar {
-    width: 250px;
+    width: 100%;
     background-color: #1e1e1e;
-    padding: 20px;
+    padding: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -79,8 +81,10 @@ nav ul li a:hover {
 
 .about {
     display: flex;
-    gap: 20px;
-    margin-bottom: 20px;
+    flex-direction: column;
+    align-items: center;
+    gap: 100px;
+    margin-bottom: 42px;
 }
 
 .about img {
@@ -91,29 +95,33 @@ nav ul li a:hover {
 
 .info {
     max-width: 600px;
+    text-align: center;
 }
 
 .skills span {
     display: inline-block;
     background-color: #333;
     padding: 5px 10px;
-    margin: 5px 0;
+    margin: 5px;
     border-radius: 5px;
 }
 
 .latest {
-    display: flex;
-    gap: 20px;
+    display: grid;
+    gap: 40px;
+    grid-template-columns: 3fr;
 }
 
 .latest-article,
 .latest-project {
-    flex: 1;
+    background-color: #1e1e1e;
+    padding: 20px;
+    border-radius: 10px;
 }
 
 .card {
     background-color: #1e1e1e;
-    padding: 10px;
+    padding: -1px;
     border-radius: 10px;
     text-align: center;
 }
@@ -125,4 +133,35 @@ nav ul li a:hover {
 .card img {
     max-width: 100%;
     border-radius: 5px;
+}
+
+@media (min-width: 768px) {
+    .container {
+        flex-direction: row;
+    }
+
+    .sidebar {
+        width: 250px;
+        height: 100vh;
+    }
+
+    .content {
+        flex-grow: 1;
+        padding: 20px;
+    }
+
+    .about {
+        flex-direction: row;
+        text-align: left;
+    }
+
+    .latest {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (min-width: 1024px) {
+    .latest {
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    }
 }
