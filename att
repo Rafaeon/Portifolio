@@ -1,0 +1,22 @@
+<aside class="sidebar">
+            <div class="logo">
+                <h1>R</h1>
+                <h2>Rafael Torres</h2>
+            </div>
+            <div class="social-links">
+                <a href="https://github.com/Rafaeon" target="_blank"><img src="./img/logotipo-do-github.png" alt="GitHub"></a>
+                <a href="https://www.linkedin.com/in/rafael-torres-799523231/" target="_blank"><img src="./img/linkedin.png" alt="LinkedIn"></a>    
+            </div>
+            <div class="theme-toggle">
+                <label>
+                    <input type="checkbox">
+                    🌙
+                </label>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Projetos</a></li>
+                </ul>
+            </nav>
+        </aside>

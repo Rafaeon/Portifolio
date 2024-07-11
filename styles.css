@@ -4,74 +4,17 @@ body {
     background-color: #121212;
     color: #ffffff;
     display: flex;
+    justify-content: center;  /* Centraliza horizontalmente */
+    align-items: center;      /* Centraliza verticalmente */
     height: 100vh;
-    flex-direction: column;
 }
 
 .container {
     display: flex;
     flex-direction: column;
-    width: 100%;
-}
-
-.sidebar {
-    width: 100%;
-    background-color: #1e1e1e;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.logo {
-    text-align: center;
-}
-
-.logo h1 {
-    font-size: 5rem;
-    color: white;
-    margin: 0;
-}
-
-.logo h2 {
-    font-size: 1.5rem;
-    margin: 0;
-}
-
-.social-links {
-    margin: 20px 0;
-    display: flex;
-    gap: 10px;
-}
-
-.social-links img {
-    width: 24px;
-    height: 24px;
-}
-
-.language-toggle,
-.theme-toggle {
-    margin: 10px 0;
-}
-
-nav ul {
-    list-style: none;
-    padding: 0;
-    text-align: center;
-}
-
-nav ul li {
-    margin: 10px 0;
-}
-
-nav ul li a {
-    color: #ffffff;
-    text-decoration: none;
-    font-size: 1.2rem;
-}
-
-nav ul li a:hover {
-    text-decoration: underline;
+    width: 80%; 
+    max-width: 1200px;        /* Limita a largura máxima do contêiner */
+    margin: 0 auto; 
 }
 
 .content {
@@ -121,7 +64,7 @@ nav ul li a:hover {
 
 .card {
     background-color: #1e1e1e;
-    padding: 10px;
+    padding: 20px; /* Aumenta o padding do card */
     border-radius: 10px;
     text-align: center;
 }
@@ -131,18 +74,34 @@ nav ul li a:hover {
 }
 
 .card img {
-    max-width: 100%;
+    width: 100%; /* Garante que a imagem ocupe toda a largura do card */
+    height: auto; /* Mantém a proporção da imagem */
+    object-fit: cover; /* Garante que a imagem cubra todo o espaço do elemento pai */
     border-radius: 5px;
+}
+
+.cv-section {
+    background-color: #1e1e1e;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.cv-section h2 {
+    margin-bottom: 10px;
+}
+
+.cv-section ol {
+    padding-left: 20px;
+}
+
+.cv-section li {
+    margin-bottom: 10px;
 }
 
 @media (min-width: 768px) {
     .container {
-        flex-direction: row;
-    }
-
-    .sidebar {
-        width: 250px;
-        height: 100vh;
+        width: 90%; /* Aumenta a largura da container */
     }
 
     .content {
@@ -156,12 +115,21 @@ nav ul li a:hover {
     }
 
     .latest {
-        grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+        grid-template-columns: repeat(2, 1fr); /* Ajuste para duas colunas */
+    }
+
+    .latest-article,
+    .latest-project {
+        padding: 30px; /* Aumenta o padding dos cards */
+    }
+
+    .card img {
+        height: 300px; /* Aumenta a altura da imagem */
     }
 }
 
 @media (min-width: 1024px) {
     .latest {
-        grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+        grid-template-columns: repeat(2, 1fr); /* Ajuste para duas colunas */
     }
 }
