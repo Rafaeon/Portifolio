@@ -1,0 +1,169 @@
+@{
+    ViewData["Title"] = "Início";
+}
+
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <section class="mb-5">
+            <h1 class="display-5 fw-bold">Rafael Torres</h1>
+            <p class="lead text-muted">Desenvolvedor Fullstack .NET</p>
+            <p class="text-muted">
+                Florianópolis, SC • 
+                <a href="mailto:rafeltorress1@gmail.com" class="text-decoration-none">rafeltorress1@gmail.com</a> • 
+                <a href="https://linkedin.com/in/rafael-torres-799523231" target="_blank" class="text-decoration-none">LinkedIn</a> • 
+                <a href="https://github.com/Rafaeon" target="_blank" class="text-decoration-none">GitHub</a>
+            </p>
+            <hr class="my-4">
+            <p>
+                Desenvolvedor Fullstack .NET com foco em backend, atuando no desenvolvimento e
+                evolução de sistemas web corporativos. Experiência anterior em operações e
+                administração, agregando visão de negócio, processos e experiência do usuário.
+            </p>
+        </section>
+
+        <section class="mb-5">
+            <h2 class="h4 mb-3">Experiência</h2>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <h5 class="card-title mb-1">Desenvolvedor .NET</h5>
+                            <p class="text-muted mb-2">Wyntech • mar/2025 – Atual</p>
+                        </div>
+                    </div>
+                    <ul class="mb-0">
+                        <li>Sistema de classificação de usuários para regras de negócio (otimização de JWT)</li>
+                        <li>Fluxo de cancelamento de nota fiscal para controladoria</li>
+                        <li>Filas de abertura de chamados e criação de documentos</li>
+                        <li>Integrações com Senior ERP (SOAP/REST) e webservice DELL</li>
+                        <li>Otimização de consultas com stored procedures</li>
+                        <li>Procedures para dashboards e correção de gargalos</li>
+                        <li>Features: tags em chamados, fluxos de regras, manutenções constantes</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <h5 class="card-title mb-1">Analista Administrativo</h5>
+                            <p class="text-muted mb-2">Wyntech • 2023 – 2025</p>
+                        </div>
+                    </div>
+                    <ul class="mb-0">
+                        <li>Implantação do sistema corporativo</li>
+                        <li>Mapeamento de processos e regras de negócio</li>
+                        <li>Transição para a área de tecnologia</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-5">
+            <h2 class="h4 mb-3">Habilidades</h2>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Backend</h5>
+                            <ul class="list-unstyled mb-0">
+                                <li>C# / ASP.NET MVC</li>
+                                <li>Web API</li>
+                                <li>Entity Framework Core</li>
+                                <li>SQL Server</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Frontend</h5>
+                            <ul class="list-unstyled mb-0">
+                                <li>JavaScript / jQuery</li>
+                                <li>HTML / CSS</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Infraestrutura</h5>
+                            <ul class="list-unstyled mb-0">
+                                <li>Docker / Portainer</li>
+                                <li>Linux</li>
+                                <li>Proxmox</li>
+                                <li>Cloudflare Tunnel</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Ferramentas</h5>
+                            <ul class="list-unstyled mb-0">
+                                <li>Git</li>
+                                <li>Azure</li>
+                                <li>GitHub Actions</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-5">
+            <h2 class="h4 mb-3">Formação</h2>
+            <div class="card">
+                <div class="card-body">
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-2">
+                            <strong>Tecnólogo em Análise e Desenvolvimento de Sistemas</strong><br>
+                            <span class="text-muted">Anhanguera • jan/2023 – jul/2025</span>
+                        </li>
+                        <li>
+                            <strong>Montagem e Manutenção de Microcomputadores</strong><br>
+                            <span class="text-muted">SENAI • jan/2014 – dez/2014</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-5">
+            <h2 class="h4 mb-3">Projetos</h2>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="card border-primary h-100">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary">CRM Comercial</h5>
+                            <p class="card-text">
+                                CRM para gestão de clientes, estoque e operações de empresa
+                                do segmento de limpeza industrial. Desenvolvido e comercializado.
+                            </p>
+                            <a asp-controller="Home" asp-action="CRM" class="btn btn-outline-primary">
+                                Ver detalhes →
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card border-success h-100">
+                        <div class="card-body">
+                            <h5 class="card-title text-success">HomeLab</h5>
+                            <p class="card-text">
+                                Infraestrutura para estudos de DevOps: Docker, Proxmox,
+                                Cloudflare Tunnel, serviços self-hosted e automação.
+                            </p>
+                            <a asp-controller="Home" asp-action="HomeLab" class="btn btn-outline-success">
+                                Ver detalhes →
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>

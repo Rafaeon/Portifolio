@@ -1,0 +1,217 @@
+@{
+    ViewData["Title"] = "HomeLab";
+}
+
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Início</a></li>
+                <li class="breadcrumb-item active">HomeLab</li>
+            </ol>
+        </nav>
+
+        <h1 class="display-6 fw-bold mb-4">HomeLab</h1>
+
+        <section class="mb-5">
+            <h2 class="h4 mb-3">Visão Geral</h2>
+            <p>
+                Infraestrutura doméstica com 2 servidores físicos para estudo de DevOps,
+                hospedagem de serviços e desenvolvimento de projetos. Ambiente de produção
+                real com virtualização, containerização e automação.
+            </p>
+            <div class="alert alert-info">
+                <strong>Modelo Híbrido:</strong> A rede do homelab é separada da rede da casa.
+                Se algo quebrar no laboratório, a internet da casa continua funcionando normalmente.
+            </div>
+        </section>
+
+        <section class="mb-5">
+            <h2 class="h4 mb-3">Arquitetura de Rede</h2>
+            <div class="mermaid">
+graph TB
+    subgraph "Internet"
+        INET[Internet]
+    end
+
+    subgraph "Rede da Casa"
+        ROTEADOR[Roteador do Provedor<br/>Wi-Fi + NAT + DHCP]
+        WIFI[Celular / Wi-Fi da Casa]
+    end
+
+    subgraph "Homelab"
+        OPN[OPNsense VM<br/>Firewall]
+        SWITCH[Switch Homelab]
+        subgraph "eva-01 (Desktop)"
+            DOCKER1[Docker Services<br/>Jellyfin, Nextcloud<br/>Paperless, Immich<br/>Grafana, Uptime Kuma]
+            SQL[(SQL Server)]
+        end
+        subgraph "eva-02 (ThinkCentre)"
+            DOCKER2[docker-vm<br/>CRM HLG + PRD]
+        end
+    end
+
+    INET <--> ROTEADOR
+    ROTEADOR <--> WIFI
+    ROTEADOR <-->|WAN| OPN
+    OPN <-->|LAN| SWITCH
+    SWITCH <--> DOCKER1
+    SWITCH <--> DOCKER2
+    DOCKER1 --> SQL
+    DOCKER2 -->|SQL| SQL
+            </div>
+            <div class="card mt-3">
+                <div class="card-body">
+                    <h5 class="card-title">Fluxo de Tráfego</h5>
+                    <ul class="mb-0">
+                        <li><strong>Casa:</strong> Celular → Roteador do provedor → Internet</li>
+                        <li><strong>Homelab:</strong> Servidor → OPNsense → Roteador provedor → Internet</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-5">
+            <h2 class="h4 mb-3">Servidores</h2>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="card h-100 border-primary">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="card-title mb-0">eva-01 (Desktop)</h5>
+                        </div>
+                        <div class="card-body">
+                            <p><strong>SO:</strong> Zorin OS + CasaOS</p>
+                            <p><strong>Especificações:</strong></p>
+                            <ul>
+                                <li>CPU: Intel i7-3770 (8 núcleos)</li>
+                                <li>GPU: Ivy Bridge</li>
+                                <li>RAM: 24GB</li>
+                            </ul>
+                            <p><strong>Serviços:</strong></p>
+                            <ul>
+                                <li>Jellyfin (mídia)</li>
+                                <li>Nextcloud (arquivos)</li>
+                                <li>Paperless (documentos)</li>
+                                <li>Immich (fotos)</li>
+                                <li>Grafana (monitoramento)</li>
+                                <li>Uptime Kuma (healthcheck)</li>
+                                <li>SQL Server</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card h-100 border-success">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="card-title mb-0">eva-02 (ThinkCentre M93p)</h5>
+                        </div>
+                        <div class="card-body">
+                            <p><strong>SO:</strong> Proxmox (hypervisor)</p>
+                            <p><strong>Especificações:</strong></p>
+                            <ul>
+                                <li>CPU: Intel i3-4330t</li>
+                                <li>GPU: Intel Xeon E3-1200 v3 (4ª gen)</li>
+                                <li>RAM: 8GB</li>
+                                <li>Armazenamento: 120GB SSD</li>
+                            </ul>
+                            <p><strong>VMs:</strong></p>
+                            <ul>
+                                <li><strong>docker-vm:</strong> 2 cores, 2GB RAM</li>
+                                <li>Roda projetos HLG e PRD do CRM</li>
+                                <li><strong>opnsense-vm:</strong> 4 cores, 4GB RAM</li>
+                                <li>Gerenciamento de firewall</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-5">
+            <h2 class="h4 mb-3">Rede Híbrida</h2>
+            <p>
+                O modelo híbrido permite que a rede da casa funcione de forma independente
+                do homelab. Tudo que acontece no laboratório passa pelo OPNsense, garantindo
+                isolamento e controle total.
+            </p>
+            <div class="row g-3 mt-2">
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Rede da Casa</h5>
+                            <ul class="mb-0">
+                                <li>Estável e simples</li>
+                                <li>Isolada dos testes</li>
+                                <li>Moradores não percebem o homelab</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Rede do Homelab</h5>
+                            <ul class="mb-0">
+                                <li>Tudo passa pelo OPNsense</li>
+                                <li>Controle: firewall, DHCP, DNS, VPN, VLAN</li>
+                                <li>Se quebrar, casa continua funcionando</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-5">
+            <h2 class="h4 mb-3">CI/CD Pipeline</h2>
+            <div class="mermaid">
+graph LR
+    A[Push<br/>GitHub] --> B[GitHub Actions]
+    B --> C[Instala<br/>cloudflared]
+    C --> D[Abre Túnel<br/>SSH]
+    D --> E[git pull]
+    E --> F[docker compose<br/>up -d]
+            </div>
+            <div class="card mt-3">
+                <div class="card-body">
+                    <p class="card-text">
+                        <strong>Vantagens:</strong> Sem necessidade de abrir portas ou expor
+                        servidor. Deploy automatizado via push na branch. Túnel SSH via
+                        Cloudflare contorna CGNAT sem IP fixo.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-5">
+            <h2 class="h4 mb-3">Stack</h2>
+            <div class="d-flex flex-wrap gap-2">
+                <span class="badge bg-primary">Proxmox</span>
+                <span class="badge bg-success">Docker</span>
+                <span class="badge bg-info">OPNsense</span>
+                <span class="badge bg-warning text-dark">Cloudflare Tunnels</span>
+                <span class="badge bg-danger">GitHub Actions</span>
+                <span class="badge bg-dark">Linux</span>
+                <span class="badge bg-secondary">SQL Server</span>
+            </div>
+        </section>
+
+        <section class="mb-5">
+            <h2 class="h4 mb-3">Planos Futuros</h2>
+            <ul class="list-group">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Backup SQL Server
+                    <span class="badge bg-warning text-dark">Prioridade 1</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Tailscale como fallback
+                    <span class="badge bg-info">Prioridade 2</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Snapshots Proxmox
+                    <span class="badge bg-secondary">Prioridade 3</span>
+                </li>
+            </ul>
+        </section>
+    </div>
+</div>

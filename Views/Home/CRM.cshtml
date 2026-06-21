@@ -1,0 +1,222 @@
+@{
+    ViewData["Title"] = "CRM - Controle de Clientes";
+}
+
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Início</a></li>
+                <li class="breadcrumb-item active">CRM</li>
+            </ol>
+        </nav>
+
+        <h1 class="display-6 fw-bold mb-4">CRM - Controle de Clientes</h1>
+
+        <section class="mb-5">
+            <h2 class="h4 mb-3">Visão Geral</h2>
+            <p>
+                Sistema de CRM desenvolvido para empresa pequena, focado no controle de
+                clientes e peças. A aplicação principal é uma aplicação MVC que gerencia
+                todo o fluxo interno da empresa.
+            </p>
+            <p>
+                Para clientes externos (possíveis novos clientes), disponibilizo uma API
+                que facilita a abertura de chamados via WhatsApp ou e-mail, integrando-se
+                ao sistema principal.
+            </p>
+        </section>
+
+        <section class="mb-5">
+            <h2 class="h4 mb-3">Funcionalidades</h2>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Gestão de Clientes</h5>
+                            <p class="card-text mb-0">Cadastro, edição e acompanhamento de clientes e suas demandas.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Controle de Chamados</h5>
+                            <p class="card-text mb-0">Abertura, acompanhamento e fechamento de chamados com numeração automática.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Abertura via WhatsApp/E-mail</h5>
+                            <p class="card-text mb-0">API para clientes externos abrirem chamados pelos canais de comunicação.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Alertas Automáticos</h5>
+                            <p class="card-text mb-0">Sistema de e-mail automático quando itens ficam abaixo do estoque ideal.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-5">
+            <h2 class="h4 mb-3">Arquitetura</h2>
+                    <div class="mermaid">
+graph TB
+    subgraph "Usuários Internos"
+        U1[Funcionários]
+    end
+
+    subgraph "Clientes Externos"
+        U2[WhatsApp]
+        U3[E-mail]
+    end
+
+    subgraph "Aplicação Principal"
+        C[CRM MVC<br/>ASP.NET MVC]
+    end
+
+    subgraph "API Externa"
+        B[API Chamados<br/>ASP.NET Web API]
+    end
+
+    subgraph "Automação"
+        E[Alertas E-mail<br/>Estoque Baixo]
+    end
+
+    subgraph "Database"
+        D[(SQL Server)]
+    end
+
+    subgraph "Deploy"
+        G[GitHub Actions]
+        H[Cloudflare Tunnels]
+    end
+
+    U1 --> C
+    U2 --> B
+    U3 --> B
+    C -->|Leitura/Escrita| D
+    B -->|Leitura/Escrita| D
+    D --> E
+    G --> H
+            </div>
+        </section>
+
+        <section class="mb-5">
+            <h2 class="h4 mb-3">Componentes</h2>
+            <div class="accordion" id="componentsAccordion">
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
+                            CRM MVC (Aplicação Principal)
+                        </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#componentsAccordion">
+                        <div class="accordion-body">
+                            <ul>
+                                <li><strong>Função:</strong> Interface principal para gestão de clientes e chamados</li>
+                                <li><strong>Features:</strong> CRUD completo, busca/filtro, relatórios com export CSV</li>
+                                <li><strong>Escopo:</strong> Toda a gestão interna da empresa</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
+                            API de Chamados (Para Clientes Externos)
+                        </button>
+                    </h2>
+                    <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#componentsAccordion">
+                        <div class="accordion-body">
+                            <ul>
+                                <li><strong>Função:</strong> Facilitar abertura de chamados por clientes externos</li>
+                                <li><strong>Canais:</strong> WhatsApp e E-mail</li>
+                                <li><strong>Route:</strong> <code>/Chamado</code> (singular)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree">
+                            Sistema de Alertas Automáticos
+                        </button>
+                    </h2>
+                    <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#componentsAccordion">
+                        <div class="accordion-body">
+                            <ul>
+                                <li><strong>Tipo:</strong> Serviço de background</li>
+                                <li><strong>Função:</strong> Monitorar estoque e enviar e-mails</li>
+                                <li><strong>Gatilho:</strong> Itens abaixo do estoque ideal</li>
+                                <li><strong>Ação:</strong> Envio automático de e-mail de alerta</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-5">
+            <h2 class="h4 mb-3">Decisões Técnicas</h2>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">MVC como Aplicação Principal</h5>
+                    <p class="card-text">
+                        A aplicação MVC é o coração do sistema. Todos os fluxos internos
+                        da empresa passam por ela. A API existe apenas como ponte para
+                        clientes externos.
+                    </p>
+                </div>
+            </div>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">API para Externos</h5>
+                    <p class="card-text">
+                        A API facilita a integração com canais externos (WhatsApp, e-mail).
+                        Clientes podem abrir chamados sem acessar o sistema principal.
+                    </p>
+                </div>
+            </div>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Automação de Alertas</h5>
+                    <p class="card-text">
+                        Sistema de e-mails automáticos monitora o estoque e avisa quando
+                        itens ficam abaixo do nível ideal. Reduz necessidade de acompanhamento manual.
+                    </p>
+                </div>
+            </div>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">CI/CD via Cloudflare Tunnels</h5>
+                    <p class="card-text">
+                        Deploy automatizado via GitHub Actions. Workflow abre túnel SSH
+                        via Cloudflare, executa git pull + docker compose. Sem necessidade
+                        de expor portas no servidor.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-5">
+            <h2 class="h4 mb-3">Stack</h2>
+            <div class="d-flex flex-wrap gap-2">
+                <span class="badge bg-primary">ASP.NET Core</span>
+                <span class="badge bg-primary">C#</span>
+                <span class="badge bg-success">SQL Server</span>
+                <span class="badge bg-info">Entity Framework</span>
+                <span class="badge bg-warning text-dark">Docker</span>
+                <span class="badge bg-danger">GitHub Actions</span>
+                <span class="badge bg-dark">Cloudflare Tunnels</span>
+            </div>
+        </section>
+    </div>
+</div>
