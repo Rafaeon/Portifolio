@@ -25,10 +25,12 @@ jobs:
             StrictHostKeyChecking no" > ~/.ssh/config
 
       - name: Deploy via SSH
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
         run: |
-          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
-            cd ~/Portifolio
-            git pull origin master
-            docker compose up -d --build
-          EOF
-
+          ssh -i ~/.ssh/id_ed25519 \
+            -o ProxyCommand="cloudflared access ssh --hostname %h" \
+            -o StrictHostKeyChecking=no \
+            ${SSH_USER}@${SSH_HOST} \
+            "cd ~/Portifolio && git pull origin master && docker compose up -d --build"
