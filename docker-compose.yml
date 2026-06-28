@@ -1,0 +1,7 @@
+services:
+  portfolio:
+    build: .
+    container_name: portfolio-prd
+    restart: unless-stopped
+    ports:
+      - "8084:8080"
