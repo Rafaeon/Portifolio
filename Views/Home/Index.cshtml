@@ -8,16 +8,17 @@
             <h1 class="display-5 fw-bold">Rafael Torres</h1>
             <p class="lead text-muted">Desenvolvedor Fullstack .NET</p>
             <p class="text-muted">
-                Florianópolis, SC • 
-                <a href="mailto:rafeltorress1@gmail.com" class="text-decoration-none">rafeltorress1@gmail.com</a> • 
-                <a href="https://linkedin.com/in/rafael-torres-799523231" target="_blank" class="text-decoration-none">LinkedIn</a> • 
+                Florianópolis, SC •
+                <a href="mailto:rafeltorress1@gmail.com" class="text-decoration-none">rafeltorress1@gmail.com</a> •
+                <a href="https://linkedin.com/in/rafael-torres-799523231" target="_blank" class="text-decoration-none">LinkedIn</a> •
                 <a href="https://github.com/Rafaeon" target="_blank" class="text-decoration-none">GitHub</a>
             </p>
             <hr class="my-4">
             <p>
-                Desenvolvedor Fullstack .NET com foco em backend, atuando no desenvolvimento e
-                evolução de sistemas web corporativos. Experiência anterior em operações e
-                administração, agregando visão de negócio, processos e experiência do usuário.
+                Desenvolvedor Fullstack .NET com experiência no desenvolvimento e evolução de sistemas web corporativos,
+                atuando em toda a stack — desde stored procedures e APIs até interfaces MVC e integrações com ERPs.
+                Antes de migrar para tecnologia, trabalhei na implantação e operação do mesmo sistema que hoje desenvolvo,
+                o que me dá uma visão de negócio que vai além do código.
             </p>
         </section>
 
@@ -32,13 +33,11 @@
                         </div>
                     </div>
                     <ul class="mb-0">
-                        <li>Sistema de classificação de usuários para regras de negócio (otimização de JWT)</li>
-                        <li>Fluxo de cancelamento de nota fiscal para controladoria</li>
-                        <li>Filas de abertura de chamados e criação de documentos</li>
-                        <li>Integrações com Senior ERP (SOAP/REST) e webservice DELL</li>
-                        <li>Otimização de consultas com stored procedures</li>
-                        <li>Procedures para dashboards e correção de gargalos</li>
-                        <li>Features: tags em chamados, fluxos de regras, manutenções constantes</li>
+                        <li>Desenvolvimento de features em sistema ITSM corporativo (Clean Architecture, API + BFF + MVC)</li>
+                        <li>Integrações com Senior ERP via SOAP/REST e webservice DELL</li>
+                        <li>Otimização de consultas SQL — stored procedures para dashboards e correção de gargalos de performance</li>
+                        <li>Implementação de filas de abertura de chamados e geração de documentos via Azure Functions</li>
+                        <li>Fluxos de regras de negócio: cancelamento de NF, classificação de usuários, tags em chamados</li>
                     </ul>
                 </div>
             </div>
@@ -51,9 +50,9 @@
                         </div>
                     </div>
                     <ul class="mb-0">
-                        <li>Implantação do sistema corporativo</li>
-                        <li>Mapeamento de processos e regras de negócio</li>
-                        <li>Transição para a área de tecnologia</li>
+                        <li>Responsável pela implantação do sistema corporativo junto aos clientes</li>
+                        <li>Mapeamento de processos e levantamento de regras de negócio</li>
+                        <li>Transição planejada para a área de desenvolvimento, aproveitando o conhecimento operacional do sistema</li>
                     </ul>
                 </div>
             </div>
@@ -68,9 +67,10 @@
                             <h5 class="card-title">Backend</h5>
                             <ul class="list-unstyled mb-0">
                                 <li>C# / ASP.NET MVC</li>
-                                <li>Web API</li>
+                                <li>Web API / BFF (Refit)</li>
                                 <li>Entity Framework Core</li>
-                                <li>SQL Server</li>
+                                <li>SQL Server / Stored Procedures</li>
+                                <li>Azure Functions</li>
                             </ul>
                         </div>
                     </div>
@@ -82,6 +82,8 @@
                             <ul class="list-unstyled mb-0">
                                 <li>JavaScript / jQuery</li>
                                 <li>HTML / CSS</li>
+                                <li>Bootstrap</li>
+                                <li>Razor / CSHTML</li>
                             </ul>
                         </div>
                     </div>
@@ -92,8 +94,9 @@
                             <h5 class="card-title">Infraestrutura</h5>
                             <ul class="list-unstyled mb-0">
                                 <li>Docker / Portainer</li>
-                                <li>Linux</li>
-                                <li>Proxmox</li>
+                                <li>Proxmox / VMs</li>
+                                <li>Linux (Debian / Zorin OS)</li>
+                                <li>OPNsense (firewall/gateway)</li>
                                 <li>Cloudflare Tunnel</li>
                             </ul>
                         </div>
@@ -104,9 +107,10 @@
                         <div class="card-body">
                             <h5 class="card-title">Ferramentas</h5>
                             <ul class="list-unstyled mb-0">
-                                <li>Git</li>
+                                <li>Git / GitHub</li>
+                                <li>GitHub Actions (CI/CD)</li>
                                 <li>Azure</li>
-                                <li>GitHub Actions</li>
+                                <li>AutoMapper / SOLID / Clean Architecture</li>
                             </ul>
                         </div>
                     </div>
@@ -140,8 +144,8 @@
                         <div class="card-body">
                             <h5 class="card-title text-primary">CRM Comercial</h5>
                             <p class="card-text">
-                                CRM para gestão de clientes, estoque e operações de empresa
-                                do segmento de limpeza industrial. Desenvolvido e comercializado.
+                                Sistema CRM desenvolvido do zero e comercializado para empresa do segmento de limpeza industrial.
+                                Cobre gestão de clientes, estoque e operações — projeto real com cliente real.
                             </p>
                             <a asp-controller="Home" asp-action="CRM" class="btn btn-outline-primary">
                                 Ver detalhes →
@@ -154,8 +158,9 @@
                         <div class="card-body">
                             <h5 class="card-title text-success">HomeLab</h5>
                             <p class="card-text">
-                                Infraestrutura para estudos de DevOps: Docker, Proxmox,
-                                Cloudflare Tunnel, serviços self-hosted e automação.
+                                Infraestrutura doméstica em produção real: dois servidores físicos, Proxmox, OPNsense como firewall,
+                                mais de 10 serviços self-hosted (Jellyfin, Nextcloud, Immich, Grafana e outros) e pipeline CI/CD
+                                com GitHub Actions via Cloudflare Tunnel — sem IP fixo, sem portas abertas.
                             </p>
                             <a asp-controller="Home" asp-action="HomeLab" class="btn btn-outline-success">
                                 Ver detalhes →

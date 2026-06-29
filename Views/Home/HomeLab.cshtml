@@ -16,9 +16,13 @@
         <section class="mb-5">
             <h2 class="h4 mb-3">Visão Geral</h2>
             <p>
-                Infraestrutura doméstica com 2 servidores físicos para estudo de DevOps,
-                hospedagem de serviços e desenvolvimento de projetos. Ambiente de produção
-                real com virtualização, containerização e automação.
+                Infraestrutura doméstica com dois servidores físicos em operação real — não um ambiente de testes,
+                mas um lab que roda mais de 10 serviços self-hosted, hospeda aplicações .NET com pipeline CI/CD
+                e tem rede segmentada com firewall dedicado.
+            </p>
+            <p>
+                O objetivo é aprender fazendo: cada serviço, cada VM e cada decisão de rede resolve um problema real
+                ou simula um cenário que existe em ambientes corporativos.
             </p>
             <div class="alert alert-info">
                 <strong>Modelo Híbrido:</strong> A rede do homelab é separada da rede da casa.
@@ -29,36 +33,42 @@
         <section class="mb-5">
             <h2 class="h4 mb-3">Arquitetura de Rede</h2>
             <div class="mermaid">
-graph TB
-    subgraph "Internet"
-        INET[Internet]
-    end
+                graph TB
+                subgraph "Internet"
+                INET[Internet]
+                end
 
-    subgraph "Rede da Casa"
-        ROTEADOR[Roteador do Provedor<br/>Wi-Fi + NAT + DHCP]
-        WIFI[Celular / Wi-Fi da Casa]
-    end
+                subgraph "Rede da Casa"
+                ROTEADOR[Roteador do Provedor<br />Wi-Fi + NAT + DHCP]
+                WIFI[Celular / Wi-Fi da Casa]
+                end
 
-    subgraph "Homelab"
-        OPN[OPNsense VM<br/>Firewall]
-        SWITCH[Switch Homelab]
-        subgraph "eva-01 (Desktop)"
-            DOCKER1[Docker Services<br/>Jellyfin, Nextcloud<br/>Paperless, Immich<br/>Grafana, Uptime Kuma]
-            SQL[(SQL Server)]
-        end
-        subgraph "eva-02 (ThinkCentre)"
-            DOCKER2[docker-vm<br/>CRM HLG + PRD]
-        end
-    end
+                subgraph "Homelab"
+                OPN[OPNsense VM<br />Firewall]
+                SWITCH[Switch Homelab]
+                subgraph "eva-01 (Desktop)"
+                DOCKER1[Docker Services<br />Jellyfin, Nextcloud<br />Paperless, Immich<br />Grafana, Uptime Kuma]
+                SQL[(SQL Server)]
+                end
+                subgraph "eva-02 (ThinkCentre)"
+                DOCKER2[docker-vm<br />CRM HLG + PRD<br />Portfólio]
+                end
+                end
 
-    INET <--> ROTEADOR
-    ROTEADOR <--> WIFI
-    ROTEADOR <-->|WAN| OPN
-    OPN <-->|LAN| SWITCH
-    SWITCH <--> DOCKER1
-    SWITCH <--> DOCKER2
-    DOCKER1 --> SQL
-    DOCKER2 -->|SQL| SQL
+                INET <-->
+                    ROTEADOR
+                    ROTEADOR <-->
+                        WIFI
+                        ROTEADOR <-->
+                            |WAN| OPN
+                            OPN <-->
+                                |LAN| SWITCH
+                                SWITCH <-->
+                                    DOCKER1
+                                    SWITCH <-->
+                                        DOCKER2
+                                        DOCKER1 --> SQL
+                                        DOCKER2 -->|SQL| SQL
             </div>
             <div class="card mt-3">
                 <div class="card-body">
@@ -84,18 +94,21 @@ graph TB
                             <p><strong>Especificações:</strong></p>
                             <ul>
                                 <li>CPU: Intel i7-3770 (8 núcleos)</li>
-                                <li>GPU: Ivy Bridge</li>
                                 <li>RAM: 24GB</li>
+                                <li>Armazenamento: 2TB HDD</li>
+
                             </ul>
                             <p><strong>Serviços:</strong></p>
                             <ul>
-                                <li>Jellyfin (mídia)</li>
-                                <li>Nextcloud (arquivos)</li>
-                                <li>Paperless (documentos)</li>
-                                <li>Immich (fotos)</li>
-                                <li>Grafana (monitoramento)</li>
-                                <li>Uptime Kuma (healthcheck)</li>
-                                <li>SQL Server</li>
+                                <li>Jellyfin — streaming de mídia</li>
+                                <li>Nextcloud — armazenamento de arquivos</li>
+                                <li>Paperless-NGX — gestão de documentos</li>
+                                <li>Immich — backup de fotos</li>
+                                <li>Grafana — monitoramento e métricas</li>
+                                <li>Uptime Kuma — healthcheck dos serviços</li>
+                                <li>AdGuard Home — bloqueio de anúncios via DNS</li>
+                                <li>Gitea — repositório Git self-hosted</li>
+                                <li>SQL Server — banco de dados das aplicações</li>
                             </ul>
                         </div>
                     </div>
@@ -110,16 +123,13 @@ graph TB
                             <p><strong>Especificações:</strong></p>
                             <ul>
                                 <li>CPU: Intel i3-4330t</li>
-                                <li>GPU: Intel Xeon E3-1200 v3 (4ª gen)</li>
                                 <li>RAM: 8GB</li>
                                 <li>Armazenamento: 120GB SSD</li>
                             </ul>
                             <p><strong>VMs:</strong></p>
                             <ul>
-                                <li><strong>docker-vm:</strong> 2 cores, 2GB RAM</li>
-                                <li>Roda projetos HLG e PRD do CRM</li>
-                                <li><strong>opnsense-vm:</strong> 4 cores, 4GB RAM</li>
-                                <li>Gerenciamento de firewall</li>
+                                <li><strong>OPNsense:</strong> 4 cores, 4GB RAM — firewall e gateway da rede</li>
+                                <li><strong>docker-vm (Debian):</strong> 2 cores, 2GB RAM — host das aplicações .NET (CRM hlg, CRM prd, Portfólio)</li>
                             </ul>
                         </div>
                     </div>
@@ -130,9 +140,9 @@ graph TB
         <section class="mb-5">
             <h2 class="h4 mb-3">Rede Híbrida</h2>
             <p>
-                O modelo híbrido permite que a rede da casa funcione de forma independente
-                do homelab. Tudo que acontece no laboratório passa pelo OPNsense, garantindo
-                isolamento e controle total.
+                Toda a rede do homelab passa pelo OPNsense antes de chegar ao switch — isso garante
+                isolamento real entre o lab e a rede da casa, além de controle centralizado de firewall,
+                DNS e DHCP.
             </p>
             <div class="row g-3 mt-2">
                 <div class="col-md-6">
@@ -140,9 +150,9 @@ graph TB
                         <div class="card-body">
                             <h5 class="card-title">Rede da Casa</h5>
                             <ul class="mb-0">
-                                <li>Estável e simples</li>
-                                <li>Isolada dos testes</li>
-                                <li>Moradores não percebem o homelab</li>
+                                <li>Estável e independente do lab</li>
+                                <li>Isolada de qualquer falha nos servidores</li>
+                                <li>Wi-Fi e dispositivos pessoais não interferem no ambiente</li>
                             </ul>
                         </div>
                     </div>
@@ -152,9 +162,9 @@ graph TB
                         <div class="card-body">
                             <h5 class="card-title">Rede do Homelab</h5>
                             <ul class="mb-0">
-                                <li>Tudo passa pelo OPNsense</li>
-                                <li>Controle: firewall, DHCP, DNS, VPN, VLAN</li>
-                                <li>Se quebrar, casa continua funcionando</li>
+                                <li>Tudo passa pelo OPNsense (192.168.1.x)</li>
+                                <li>Controle centralizado: firewall, DHCP, DNS</li>
+                                <li>Ponto único para políticas de rede e monitoramento</li>
                             </ul>
                         </div>
                     </div>
@@ -165,19 +175,21 @@ graph TB
         <section class="mb-5">
             <h2 class="h4 mb-3">CI/CD Pipeline</h2>
             <div class="mermaid">
-graph LR
-    A[Push<br/>GitHub] --> B[GitHub Actions]
-    B --> C[Instala<br/>cloudflared]
-    C --> D[Abre Túnel<br/>SSH]
-    D --> E[git pull]
-    E --> F[docker compose<br/>up -d]
+                graph LR
+                A[Push<br />GitHub] --> B[GitHub Actions]
+                B --> C[Instala<br />cloudflared]
+                C --> D[Abre Túnel<br />SSH]
+                D --> E[git pull]
+                E --> F[docker compose<br />up -d]
             </div>
             <div class="card mt-3">
                 <div class="card-body">
                     <p class="card-text">
-                        <strong>Vantagens:</strong> Sem necessidade de abrir portas ou expor
-                        servidor. Deploy automatizado via push na branch. Túnel SSH via
-                        Cloudflare contorna CGNAT sem IP fixo.
+                        O provedor usa CGNAT — sem IP fixo, sem possibilidade de abrir portas diretamente.
+                        A solução foi usar Cloudflare Tunnel como canal de SSH: o GitHub Actions instala o
+                        <code>cloudflared</code>, abre um túnel autenticado até o servidor e executa o deploy.
+                        Resultado: pipeline completamente automatizado, zero portas expostas, zero dependência de IP fixo.
+                        Esse mesmo fluxo serve o CRM (hlg e prd) e este portfólio.
                     </p>
                 </div>
             </div>
@@ -200,15 +212,15 @@ graph LR
             <h2 class="h4 mb-3">Planos Futuros</h2>
             <ul class="list-group">
                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                    Backup SQL Server
+                    Backup automatizado do SQL Server — hoje o banco não tem rotina de backup, o que é o maior risco real do ambiente
                     <span class="badge bg-warning text-dark">Prioridade 1</span>
                 </li>
                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                    Tailscale como fallback
+                    Tailscale como fallback de acesso — redundância para quando o Cloudflare Tunnel não estiver disponível
                     <span class="badge bg-info">Prioridade 2</span>
                 </li>
                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                    Snapshots Proxmox
+                    Snapshots automáticos no Proxmox — ponto de restauração rápido para as VMs em caso de falha
                     <span class="badge bg-secondary">Prioridade 3</span>
                 </li>
             </ul>

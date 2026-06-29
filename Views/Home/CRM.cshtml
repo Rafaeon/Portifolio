@@ -16,14 +16,13 @@
         <section class="mb-5">
             <h2 class="h4 mb-3">Visão Geral</h2>
             <p>
-                Sistema de CRM desenvolvido para empresa pequena, focado no controle de
-                clientes e peças. A aplicação principal é uma aplicação MVC que gerencia
-                todo o fluxo interno da empresa.
+                Sistema CRM desenvolvido do zero, entregue e em uso real por uma empresa do segmento de limpeza industrial.
+                A aplicação cobre todo o fluxo interno da operação — clientes, chamados, estoque e alertas automáticos —
+                com uma API separada para integração com canais externos de atendimento.
             </p>
             <p>
-                Para clientes externos (possíveis novos clientes), disponibilizo uma API
-                que facilita a abertura de chamados via WhatsApp ou e-mail, integrando-se
-                ao sistema principal.
+                O projeto nasceu de uma demanda real: a empresa precisava de um sistema que se adaptasse ao processo dela,
+                não o contrário. Foi desenvolvido, implantado e é mantido de forma independente.
             </p>
         </section>
 
@@ -34,7 +33,7 @@
                     <div class="card h-100">
                         <div class="card-body">
                             <h5 class="card-title">Gestão de Clientes</h5>
-                            <p class="card-text mb-0">Cadastro, edição e acompanhamento de clientes e suas demandas.</p>
+                            <p class="card-text mb-0">Cadastro, edição e acompanhamento completo de clientes e suas demandas, com busca, filtros e exportação CSV.</p>
                         </div>
                     </div>
                 </div>
@@ -42,7 +41,7 @@
                     <div class="card h-100">
                         <div class="card-body">
                             <h5 class="card-title">Controle de Chamados</h5>
-                            <p class="card-text mb-0">Abertura, acompanhamento e fechamento de chamados com numeração automática.</p>
+                            <p class="card-text mb-0">Abertura, acompanhamento e fechamento de chamados com numeração automática e histórico completo.</p>
                         </div>
                     </div>
                 </div>
@@ -50,15 +49,15 @@
                     <div class="card h-100">
                         <div class="card-body">
                             <h5 class="card-title">Abertura via WhatsApp/E-mail</h5>
-                            <p class="card-text mb-0">API para clientes externos abrirem chamados pelos canais de comunicação.</p>
+                            <p class="card-text mb-0">API dedicada para clientes externos abrirem chamados pelos canais que já usam — sem precisar acessar o sistema.</p>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="card h-100">
                         <div class="card-body">
-                            <h5 class="card-title">Alertas Automáticos</h5>
-                            <p class="card-text mb-0">Sistema de e-mail automático quando itens ficam abaixo do estoque ideal.</p>
+                            <h5 class="card-title">Alertas Automáticos de Estoque</h5>
+                            <p class="card-text mb-0">Serviço de background que monitora o estoque e dispara e-mails automáticos quando itens ficam abaixo do nível ideal — sem intervenção manual.</p>
                         </div>
                     </div>
                 </div>
@@ -67,45 +66,45 @@
 
         <section class="mb-5">
             <h2 class="h4 mb-3">Arquitetura</h2>
-                    <div class="mermaid">
-graph TB
-    subgraph "Usuários Internos"
-        U1[Funcionários]
-    end
+            <div class="mermaid">
+                graph TB
+                subgraph "Usuários Internos"
+                U1[Funcionários]
+                end
 
-    subgraph "Clientes Externos"
-        U2[WhatsApp]
-        U3[E-mail]
-    end
+                subgraph "Clientes Externos"
+                U2[WhatsApp]
+                U3[E-mail]
+                end
 
-    subgraph "Aplicação Principal"
-        C[CRM MVC<br/>ASP.NET MVC]
-    end
+                subgraph "Aplicação Principal"
+                C[CRM MVC<br />ASP.NET MVC]
+                end
 
-    subgraph "API Externa"
-        B[API Chamados<br/>ASP.NET Web API]
-    end
+                subgraph "API Externa"
+                B[API Chamados<br />ASP.NET Web API]
+                end
 
-    subgraph "Automação"
-        E[Alertas E-mail<br/>Estoque Baixo]
-    end
+                subgraph "Automação"
+                E[Alertas E-mail<br />Estoque Baixo]
+                end
 
-    subgraph "Database"
-        D[(SQL Server)]
-    end
+                subgraph "Database"
+                D[(SQL Server)]
+                end
 
-    subgraph "Deploy"
-        G[GitHub Actions]
-        H[Cloudflare Tunnels]
-    end
+                subgraph "Deploy"
+                G[GitHub Actions]
+                H[Cloudflare Tunnels]
+                end
 
-    U1 --> C
-    U2 --> B
-    U3 --> B
-    C -->|Leitura/Escrita| D
-    B -->|Leitura/Escrita| D
-    D --> E
-    G --> H
+                U1 --> C
+                U2 --> B
+                U3 --> B
+                C -->|Leitura/Escrita| D
+                B -->|Leitura/Escrita| D
+                D --> E
+                G --> H
             </div>
         </section>
 
@@ -121,9 +120,9 @@ graph TB
                     <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#componentsAccordion">
                         <div class="accordion-body">
                             <ul>
-                                <li><strong>Função:</strong> Interface principal para gestão de clientes e chamados</li>
-                                <li><strong>Features:</strong> CRUD completo, busca/filtro, relatórios com export CSV</li>
-                                <li><strong>Escopo:</strong> Toda a gestão interna da empresa</li>
+                                <li><strong>Função:</strong> Interface central para toda a operação interna da empresa</li>
+                                <li><strong>Features:</strong> CRUD completo, busca e filtros, relatórios com exportação CSV</li>
+                                <li><strong>Escopo:</strong> Clientes, chamados, estoque e histórico operacional</li>
                             </ul>
                         </div>
                     </div>
@@ -137,9 +136,9 @@ graph TB
                     <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#componentsAccordion">
                         <div class="accordion-body">
                             <ul>
-                                <li><strong>Função:</strong> Facilitar abertura de chamados por clientes externos</li>
-                                <li><strong>Canais:</strong> WhatsApp e E-mail</li>
-                                <li><strong>Route:</strong> <code>/Chamado</code> (singular)</li>
+                                <li><strong>Função:</strong> Permitir que clientes externos abram chamados pelos canais que já usam</li>
+                                <li><strong>Canais:</strong> WhatsApp e E-mail — sem necessidade de acesso ao sistema principal</li>
+                                <li><strong>Route:</strong> <code>/Chamado</code></li>
                             </ul>
                         </div>
                     </div>
@@ -153,10 +152,10 @@ graph TB
                     <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#componentsAccordion">
                         <div class="accordion-body">
                             <ul>
-                                <li><strong>Tipo:</strong> Serviço de background</li>
-                                <li><strong>Função:</strong> Monitorar estoque e enviar e-mails</li>
-                                <li><strong>Gatilho:</strong> Itens abaixo do estoque ideal</li>
-                                <li><strong>Ação:</strong> Envio automático de e-mail de alerta</li>
+                                <li><strong>Tipo:</strong> Serviço de background (hosted service)</li>
+                                <li><strong>Função:</strong> Monitorar estoque continuamente e notificar responsáveis</li>
+                                <li><strong>Gatilho:</strong> Item abaixo do estoque mínimo definido</li>
+                                <li><strong>Ação:</strong> Disparo automático de e-mail de alerta</li>
                             </ul>
                         </div>
                     </div>
@@ -170,37 +169,37 @@ graph TB
                 <div class="card-body">
                     <h5 class="card-title">MVC como Aplicação Principal</h5>
                     <p class="card-text">
-                        A aplicação MVC é o coração do sistema. Todos os fluxos internos
-                        da empresa passam por ela. A API existe apenas como ponte para
-                        clientes externos.
+                        O MVC centraliza toda a operação interna. A escolha faz sentido para um sistema onde
+                        os usuários são funcionários da empresa usando uma interface web — renderização server-side,
+                        sem overhead de SPA para um contexto que não precisava disso.
                     </p>
                 </div>
             </div>
             <div class="card mb-3">
                 <div class="card-body">
-                    <h5 class="card-title">API para Externos</h5>
+                    <h5 class="card-title">API Separada para Externos</h5>
                     <p class="card-text">
-                        A API facilita a integração com canais externos (WhatsApp, e-mail).
-                        Clientes podem abrir chamados sem acessar o sistema principal.
+                        Clientes externos não deveriam acessar o sistema interno. A API cria uma camada de entrada
+                        controlada, permitindo integração com WhatsApp e e-mail sem expor o CRM diretamente.
                     </p>
                 </div>
             </div>
             <div class="card mb-3">
                 <div class="card-body">
-                    <h5 class="card-title">Automação de Alertas</h5>
+                    <h5 class="card-title">Alertas como Serviço de Background</h5>
                     <p class="card-text">
-                        Sistema de e-mails automáticos monitora o estoque e avisa quando
-                        itens ficam abaixo do nível ideal. Reduz necessidade de acompanhamento manual.
+                        Em vez de verificações manuais de estoque, um hosted service roda em background e dispara
+                        e-mails automaticamente. Reduz dependência de processos humanos para algo que pode ser automatizado.
                     </p>
                 </div>
             </div>
             <div class="card mb-3">
                 <div class="card-body">
-                    <h5 class="card-title">CI/CD via Cloudflare Tunnels</h5>
+                    <h5 class="card-title">CI/CD via Cloudflare Tunnel</h5>
                     <p class="card-text">
-                        Deploy automatizado via GitHub Actions. Workflow abre túnel SSH
-                        via Cloudflare, executa git pull + docker compose. Sem necessidade
-                        de expor portas no servidor.
+                        O servidor não tem IP fixo e está atrás de CGNAT. Em vez de workarounds frágeis,
+                        o deploy usa GitHub Actions abrindo um túnel SSH via Cloudflare — push na branch
+                        dispara git pull + docker compose automaticamente, sem expor nenhuma porta.
                     </p>
                 </div>
             </div>
