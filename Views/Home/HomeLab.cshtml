@@ -16,9 +16,9 @@
         <section class="mb-5">
             <h2 class="h4 mb-3">Visão Geral</h2>
             <p>
-                Infraestrutura doméstica com dois servidores físicos em operação real — não um ambiente de testes,
-                mas um lab que roda mais de 10 serviços self-hosted, hospeda aplicações .NET com pipeline CI/CD
-                e tem rede segmentada com firewall dedicado.
+                Infraestrutura doméstica com três servidores físicos em operação real — não um ambiente de testes,
+                mas um lab que roda mais de 10 serviços self-hosted, hospeda aplicações .NET com pipeline CI/CD,
+                tem rede segmentada com firewall dedicado e um servidor de IA local para modelos de linguagem.
             </p>
             <p>
                 O objetivo é aprender fazendo: cada serviço, cada VM e cada decisão de rede resolve um problema real
@@ -47,11 +47,14 @@
                 OPN[OPNsense VM<br />Firewall]
                 SWITCH[Switch Homelab]
                 subgraph "eva-01 (Desktop)"
-                DOCKER1[Docker Services<br />Jellyfin, Nextcloud<br />Paperless, Immich<br />Grafana, Uptime Kuma]
+                DOCKER1[Docker Services<br />Jellyfin, Nextcloud<br />Paperless, Immich<br />Grafana, Uptime Kuma<br />Open WebUI]
                 SQL[(SQL Server)]
                 end
                 subgraph "eva-02 (ThinkCentre)"
                 DOCKER2[docker-vm<br />CRM HLG + PRD<br />Portfólio]
+                end
+                subgraph "eva-03 (Dell Inspiron)"
+                OLLAMA[Ollama<br />IA Local]
                 end
                 end
 
@@ -67,8 +70,11 @@
                                     DOCKER1
                                     SWITCH <-->
                                         DOCKER2
-                                        DOCKER1 --> SQL
-                                        DOCKER2 -->|SQL| SQL
+                                        SWITCH <-->
+                                            OLLAMA
+                                            DOCKER1 --> SQL
+                                            DOCKER2 -->|SQL| SQL
+                                            DOCKER1 -->|API| OLLAMA
             </div>
             <div class="card mt-3">
                 <div class="card-body">
@@ -76,6 +82,7 @@
                     <ul class="mb-0">
                         <li><strong>Casa:</strong> Celular → Roteador do provedor → Internet</li>
                         <li><strong>Homelab:</strong> Servidor → OPNsense → Roteador provedor → Internet</li>
+                        <li><strong>IA Local:</strong> Open WebUI (eva-01) → API Ollama (eva-03) via LAN</li>
                     </ul>
                 </div>
             </div>
@@ -84,7 +91,7 @@
         <section class="mb-5">
             <h2 class="h4 mb-3">Servidores</h2>
             <div class="row g-3">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="card h-100 border-primary">
                         <div class="card-header bg-primary text-white">
                             <h5 class="card-title mb-0">eva-01 (Desktop)</h5>
@@ -96,24 +103,19 @@
                                 <li>CPU: Intel i7-3770 (8 núcleos)</li>
                                 <li>RAM: 24GB</li>
                                 <li>Armazenamento: 2TB HDD</li>
-
                             </ul>
                             <p><strong>Serviços:</strong></p>
                             <ul>
-                                <li>Jellyfin — streaming de mídia</li>
-                                <li>Nextcloud — armazenamento de arquivos</li>
-                                <li>Paperless-NGX — gestão de documentos</li>
-                                <li>Immich — backup de fotos</li>
-                                <li>Grafana — monitoramento e métricas</li>
-                                <li>Uptime Kuma — healthcheck dos serviços</li>
-                                <li>AdGuard Home — bloqueio de anúncios via DNS</li>
-                                <li>Gitea — repositório Git self-hosted</li>
-                                <li>SQL Server — banco de dados das aplicações</li>
+                                <li>Jellyfin, Nextcloud, Paperless</li>
+                                <li>Immich, Grafana, Uptime Kuma</li>
+                                <li>AdGuard Home, Gitea</li>
+                                <li>SQL Server</li>
+                                <li>Open WebUI (porta 3014)</li>
                             </ul>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="card h-100 border-success">
                         <div class="card-header bg-success text-white">
                             <h5 class="card-title mb-0">eva-02 (ThinkCentre M93p)</h5>
@@ -128,8 +130,30 @@
                             </ul>
                             <p><strong>VMs:</strong></p>
                             <ul>
-                                <li><strong>OPNsense:</strong> 4 cores, 4GB RAM — firewall e gateway da rede</li>
-                                <li><strong>docker-vm (Debian):</strong> 2 cores, 2GB RAM — host das aplicações .NET (CRM hlg, CRM prd, Portfólio)</li>
+                                <li><strong>OPNsense:</strong> 4 cores, 4GB RAM — firewall</li>
+                                <li><strong>docker-vm:</strong> 2 cores, 2GB RAM — apps .NET</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 border-warning">
+                        <div class="card-header bg-warning text-dark">
+                            <h5 class="card-title mb-0">eva-03 (Dell Inspiron 7472)</h5>
+                        </div>
+                        <div class="card-body">
+                            <p><strong>SO:</strong> Ubuntu Server (bare metal)</p>
+                            <p><strong>Especificações:</strong></p>
+                            <ul>
+                                <li>CPU: Intel i5-8250U</li>
+                                <li>RAM: 8GB</li>
+                                <li>GPU: GeForce MX150 (2GB)</li>
+                            </ul>
+                            <p><strong>Serviços:</strong></p>
+                            <ul>
+                                <li><strong>Ollama:</strong> API de IA local (porta 11434)</li>
+                                <li>qwen2.5-coder:7b</li>
+                                <li>deepseek-r1:8b (Q4_K_M)</li>
                             </ul>
                         </div>
                     </div>
@@ -196,6 +220,40 @@
         </section>
 
         <section class="mb-5">
+            <h2 class="h4 mb-3">IA Local — Ollama</h2>
+            <p>
+                O homelab conta com um servidor dedicado para inferência de modelos de linguagem local,
+                eliminando dependência de APIs externas e mantendo os dados na LAN.
+            </p>
+            <div class="row g-3 mt-2">
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Arquitetura</h5>
+                            <ul class="mb-0">
+                                <li><strong>eva-03:</strong> Ollama rodando via systemd nativo</li>
+                                <li><strong>eva-01:</strong> Open WebUI como interface</li>
+                                <li><strong>Comunicação:</strong> API REST via LAN</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Modelos</h5>
+                            <ul class="mb-0">
+                                <li><strong>qwen2.5-coder:7b</strong> — código e programação</li>
+                                <li><strong>deepseek-r1:8b</strong> — raciocínio (Q4_K_M)</li>
+                                <li><em>Pendente:</em> qwen2.5, nomic-embed-text</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-5">
             <h2 class="h4 mb-3">Stack</h2>
             <div class="d-flex flex-wrap gap-2">
                 <span class="badge bg-primary">Proxmox</span>
@@ -205,6 +263,8 @@
                 <span class="badge bg-danger">GitHub Actions</span>
                 <span class="badge bg-dark">Linux</span>
                 <span class="badge bg-secondary">SQL Server</span>
+                <span class="badge bg-primary">Ollama</span>
+                <span class="badge bg-success">Open WebUI</span>
             </div>
         </section>
 
@@ -222,6 +282,10 @@
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     Snapshots automáticos no Proxmox — ponto de restauração rápido para as VMs em caso de falha
                     <span class="badge bg-secondary">Prioridade 3</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Expandir modelos Ollama — testar qwen2.5 e nomic-embed-text para embeddings
+                    <span class="badge bg-primary">Prioridade 4</span>
                 </li>
             </ul>
         </section>
