@@ -46,6 +46,7 @@
                 subgraph "Homelab"
                 OPN[OPNsense VM<br />Firewall]
                 SWITCH[Switch Homelab]
+                NPM[Nginx Proxy<br />Manager]
                 subgraph "eva-01 (Desktop)"
                 DOCKER1[Docker Services<br />Jellyfin, Nextcloud<br />Paperless, Immich<br />Grafana, Uptime Kuma<br />Open WebUI]
                 SQL[(SQL Server)]
@@ -66,22 +67,20 @@
                             |WAN| OPN
                             OPN <-->
                                 |LAN| SWITCH
-                                SWITCH <-->
-                                    DOCKER1
-                                    SWITCH <-->
-                                        DOCKER2
-                                        SWITCH <-->
-                                            OLLAMA
-                                            DOCKER1 --> SQL
-                                            DOCKER2 -->|SQL| SQL
-                                            DOCKER1 -->|API| OLLAMA
+                                SWITCH <--> NPM
+                                NPM <--> DOCKER1
+                                NPM <--> DOCKER2
+                                SWITCH <--> OLLAMA
+                                DOCKER1 --> SQL
+                                DOCKER2 -->|SQL| SQL
+                                DOCKER1 -->|API| OLLAMA
             </div>
             <div class="card mt-3">
                 <div class="card-body">
                     <h5 class="card-title">Fluxo de Tráfego</h5>
                     <ul class="mb-0">
-                        <li><strong>Casa:</strong> Celular → Roteador do provedor → Internet</li>
-                        <li><strong>Homelab:</strong> Servidor → OPNsense → Roteador provedor → Internet</li>
+                        <li><strong>Serviços HTTP:</strong> Internet → Cloudflare → cloudflared → NPM → Serviço</li>
+                        <li><strong>Cockpit/SSH:</strong> Internet → Cloudflare → cloudflared → Serviço (direto)</li>
                         <li><strong>IA Local:</strong> Open WebUI (eva-01) → API Ollama (eva-03) via LAN</li>
                     </ul>
                 </div>
@@ -213,7 +212,11 @@
                         A solução foi usar Cloudflare Tunnel como canal de SSH: o GitHub Actions instala o
                         <code>cloudflared</code>, abre um túnel autenticado até o servidor e executa o deploy.
                         Resultado: pipeline completamente automatizado, zero portas expostas, zero dependência de IP fixo.
-                        Esse mesmo fluxo serve o CRM (hlg e prd) e este portfólio.
+                    </p>
+                    <p class="card-text mb-0">
+                        Com a migração para o <strong>Nginx Proxy Manager</strong>, o <code>cloudflared</code> agora
+                        possui apenas 3 regras (Cockpit, SSH e um catch-all para o NPM) — qualquer novo serviço
+                        é adicionado via interface web do NPM em ~2 minutos, sem editar YAML e sem reiniciar o túnel.
                     </p>
                 </div>
             </div>
@@ -259,8 +262,9 @@
                 <span class="badge bg-primary">Proxmox</span>
                 <span class="badge bg-success">Docker</span>
                 <span class="badge bg-info">OPNsense</span>
+                <span class="badge bg-danger">Nginx Proxy Manager</span>
                 <span class="badge bg-warning text-dark">Cloudflare Tunnels</span>
-                <span class="badge bg-danger">GitHub Actions</span>
+                <span class="badge bg-primary">GitHub Actions</span>
                 <span class="badge bg-dark">Linux</span>
                 <span class="badge bg-secondary">SQL Server</span>
                 <span class="badge bg-primary">Ollama</span>
