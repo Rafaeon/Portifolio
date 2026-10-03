@@ -11,14 +11,15 @@
             </ol>
         </nav>
 
-        <h1 class="display-6 fw-bold mb-4">HomeLab</h1>
+        <p class="section-kicker">Infra · produção real</p>
+        <h1 class="display-6 fw-bold mb-3">HomeLab</h1>
 
         <section class="mb-5">
             <h2 class="h4 mb-3">Visão Geral</h2>
             <p>
                 Infraestrutura doméstica com três servidores físicos em operação real — não um ambiente de testes,
                 mas um lab que roda mais de 10 serviços self-hosted, hospeda aplicações .NET com pipeline CI/CD,
-                tem rede segmentada com firewall dedicado e um servidor de IA local para modelos de linguagem.
+                tem rede segmentada com firewall dedicado e um servidor de IA local em modo backup.
             </p>
             <p>
                 O objetivo é aprender fazendo: cada serviço, cada VM e cada decisão de rede resolve um problema real
@@ -150,7 +151,7 @@
                             </ul>
                             <p><strong>Serviços:</strong></p>
                             <ul>
-                                <li><strong>Ollama:</strong> API de IA local (porta 11434)</li>
+                                <li><strong>Ollama:</strong> API de inferência local (porta 11434) — modo backup</li>
                                 <li>qwen2.5-coder:7b</li>
                                 <li>deepseek-r1:8b (Q4_K_M)</li>
                             </ul>
@@ -223,10 +224,12 @@
         </section>
 
         <section class="mb-5">
-            <h2 class="h4 mb-3">IA Local — Ollama</h2>
-            <p>
-                O homelab conta com um servidor dedicado para inferência de modelos de linguagem local,
-                eliminando dependência de APIs externas e mantendo os dados na LAN.
+            <p class="section-kicker">Homelab</p>
+            <h2 class="section-title">IA Local — Ollama (backup)</h2>
+            <p class="prose-width">
+                O eva-03 mantém Ollama + Open WebUI prontos na LAN como <strong>backup local</strong> de inferência.
+                O uso diário de IA no fluxo de dev acontece em ferramentas de orquestração de agentes
+                (MiMoCode e chats free via MCP) — o lab local é reserva quando a nuvem/conta externa não resolve.
             </p>
             <div class="row g-3 mt-2">
                 <div class="col-md-6">
@@ -267,7 +270,7 @@
                 <span class="badge bg-primary">GitHub Actions</span>
                 <span class="badge bg-dark">Linux</span>
                 <span class="badge bg-secondary">SQL Server</span>
-                <span class="badge bg-primary">Ollama</span>
+                <span class="badge-stack"><i class="devicon-ollama-plain" aria-hidden="true"></i> Ollama (backup)</span>
                 <span class="badge bg-success">Open WebUI</span>
             </div>
         </section>
