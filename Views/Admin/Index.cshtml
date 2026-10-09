@@ -1,0 +1,77 @@
+@model IEnumerable<Portifolio.Models.NewsletterPost>
+@{
+    ViewData["Title"] = "Admin · Newsletter";
+}
+
+<div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4">
+    <div>
+        <p class="section-kicker">Painel</p>
+        <h1 class="display-6 fw-bold mb-1">Newsletter · Admin</h1>
+        <p class="text-muted mb-0">Gerencie posts públicos e privados.</p>
+    </div>
+    <div class="d-flex flex-wrap gap-2">
+        <a class="btn btn-outline-secondary" asp-controller="Newsletter" asp-action="Index">Ver público</a>
+        <a class="btn btn-outline-secondary" asp-controller="Account" asp-action="AlterarCredenciais">Credenciais</a>
+        <a class="btn btn-primary" asp-controller="Admin" asp-action="Create">Novo post</a>
+        <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+            @Html.AntiForgeryToken()
+            <button type="submit" class="btn btn-outline-danger">Sair</button>
+        </form>
+    </div>
+</div>
+
+@if (TempData["Sucesso"] is string msg)
+{
+    <div class="alert alert-success">@msg</div>
+}
+
+@if (!Model.Any())
+{
+    <div class="card">
+        <div class="card-body text-center py-5">
+            <p class="text-muted mb-0">Nenhum post ainda.</p>
+        </div>
+    </div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Título</th>
+                    <th>Visibilidade</th>
+                    <th class="text-end">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var post in Model)
+                {
+                    <tr>
+                        <td class="mono text-muted">@post.CriadoEm.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</td>
+                        <td>
+                            <a asp-controller="Newsletter" asp-action="Details" asp-route-id="@post.Id">
+                                @post.Titulo
+                            </a>
+                        </td>
+                        <td>
+                            @if (post.Publico)
+                            {
+                                <span class="badge text-bg-success">Público</span>
+                            }
+                            else
+                            {
+                                <span class="badge text-bg-warning">Privado</span>
+                            }
+                        </td>
+                        <td class="text-end">
+                            <a class="btn btn-sm btn-outline-secondary" asp-action="Edit" asp-route-id="@post.Id">Editar</a>
+                            <a class="btn btn-sm btn-outline-danger" asp-action="Delete" asp-route-id="@post.Id">Excluir</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

@@ -1,0 +1,79 @@
+@model IEnumerable<Portifolio.Models.NewsletterPost>
+@{
+    ViewData["Title"] = "Newsletter";
+    var autenticado = User.Identity?.IsAuthenticated == true;
+}
+
+<div class="row">
+    <div class="col-lg-9 mx-auto">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Início</a></li>
+                <li class="breadcrumb-item active">Newsletter</li>
+            </ol>
+        </nav>
+
+        <div class="d-flex flex-wrap justify-content-between align-items-end gap-2 mb-4">
+            <div>
+                <p class="section-kicker">Updates</p>
+                <h1 class="display-6 fw-bold mb-1">Newsletter</h1>
+                <p class="text-muted mb-0 prose-width">
+                    O que eu ando construindo, estudando e quebrando por aqui.
+                </p>
+            </div>
+            @if (autenticado)
+            {
+                <a class="btn btn-primary" asp-controller="Admin" asp-action="Create">Novo post</a>
+            }
+        </div>
+
+        @if (!Model.Any())
+        {
+            <div class="card">
+                <div class="card-body text-center py-5">
+                    <p class="text-muted mb-0">Nenhuma publicação ainda. Volte em breve.</p>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="d-flex flex-column gap-3">
+                @foreach (var post in Model)
+                {
+                    <article class="card newsletter-card reveal">
+                        <div class="card-body p-4">
+                            <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
+                                <span class="mono text-muted small">@post.CriadoEm.ToLocalTime().ToString("dd/MM/yyyy")</span>
+                                @if (!post.Publico)
+                                {
+                                    <span class="badge text-bg-warning">Privado</span>
+                                }
+                                else
+                                {
+                                    <span class="badge text-bg-success">Público</span>
+                                }
+                            </div>
+                            <h2 class="h4 fw-bold mb-2">
+                                <a asp-controller="Newsletter" asp-action="Details" asp-route-id="@post.Id" class="text-decoration-none">
+                                    @post.Titulo
+                                </a>
+                            </h2>
+                            @if (!string.IsNullOrWhiteSpace(post.Resumo))
+                            {
+                                <p class="text-muted mb-0">@post.Resumo</p>
+                            }
+                            else
+                            {
+                                var resumo = post.Conteudo.Length > 220 ? post.Conteudo[..220] + "…" : post.Conteudo;
+                                <p class="text-muted mb-0">@resumo</p>
+                            }
+                            <a class="d-inline-block mt-3" asp-controller="Newsletter" asp-action="Details" asp-route-id="@post.Id">
+                                Ler mais →
+                            </a>
+                        </div>
+                    </article>
+                }
+            </div>
+        }
+    </div>
+</div>

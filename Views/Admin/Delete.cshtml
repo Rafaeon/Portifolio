@@ -1,0 +1,38 @@
+@model Portifolio.Models.NewsletterPost
+@{
+    ViewData["Title"] = "Excluir post";
+}
+
+<div class="row">
+    <div class="col-lg-7 mx-auto">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Início</a></li>
+                <li class="breadcrumb-item"><a asp-controller="Admin" asp-action="Index">Admin</a></li>
+                <li class="breadcrumb-item active">Excluir</li>
+            </ol>
+        </nav>
+
+        <p class="section-kicker">Newsletter</p>
+        <h1 class="display-6 fw-bold mb-2">Excluir post?</h1>
+        <p class="text-muted mb-4">Essa ação não pode ser desfeita.</p>
+
+        <div class="card mb-4">
+            <div class="card-body">
+                <h2 class="h5 fw-bold">@Model.Titulo</h2>
+                <p class="mono text-muted small mb-2">@Model.CriadoEm.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</p>
+                <p class="text-muted mb-0">
+                    @(string.IsNullOrWhiteSpace(Model.Resumo)
+                        ? (Model.Conteudo.Length > 180 ? Model.Conteudo[..180] + "…" : Model.Conteudo)
+                        : Model.Resumo)
+                </p>
+            </div>
+        </div>
+
+        <form asp-controller="Admin" asp-action="Delete" asp-route-id="@Model.Id" method="post" class="d-flex gap-2">
+            @Html.AntiForgeryToken()
+            <button type="submit" class="btn btn-danger">Excluir</button>
+            <a class="btn btn-outline-secondary" asp-action="Index">Cancelar</a>
+        </form>
+    </div>
+</div>

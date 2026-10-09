@@ -1,0 +1,48 @@
+@model Portifolio.Models.NewsletterPost
+@{
+    ViewData["Title"] = Model.Titulo;
+}
+
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Início</a></li>
+                <li class="breadcrumb-item"><a asp-controller="Newsletter" asp-action="Index">Newsletter</a></li>
+                <li class="breadcrumb-item active">@Model.Titulo</li>
+            </ol>
+        </nav>
+
+        <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+            <span class="mono text-muted">@Model.CriadoEm.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</span>
+            @if (!Model.Publico)
+            {
+                <span class="badge text-bg-warning">Privado</span>
+            }
+        </div>
+
+        <h1 class="display-6 fw-bold mb-4">@Model.Titulo</h1>
+
+        <div class="card">
+            <div class="card-body p-4 p-md-5">
+                <div class="newsletter-body">
+                    @foreach (var linha in Model.Conteudo.Replace("\r\n", "\n").Split('\n'))
+                    {
+                        if (string.IsNullOrWhiteSpace(linha))
+                        {
+                            <div class="mb-3"></div>
+                        }
+                        else
+                        {
+                            <p class="mb-2">@linha</p>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <a class="btn btn-outline-secondary" asp-controller="Newsletter" asp-action="Index">← Voltar</a>
+        </div>
+    </div>
+</div>
