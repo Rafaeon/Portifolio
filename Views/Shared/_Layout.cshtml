@@ -1,9 +1,18 @@
+@{
+    var descricao = ViewData["Description"] as string
+        ?? "Portfólio de Rafael Torres — desenvolvedor .NET fullstack com experiência em sistemas corporativos, integrações ERP/CRM e infraestrutura self-hosted.";
+}
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Rafael | Portfólio</title>
+    <meta name="description" content="@descricao" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="@ViewData["Title"] - Rafael | Portfólio" />
+    <meta property="og:description" content="@descricao" />
+    <meta name="twitter:card" content="summary" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -81,6 +90,12 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="Home" asp-action="HomeLab">HomeLab</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Home" asp-action="RAG">RAG</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Home" asp-action="CliCleaner">CLICleaner</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="Newsletter" asp-action="Index">Newsletter</a>

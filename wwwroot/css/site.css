@@ -546,3 +546,41 @@ html {
     transform: none;
   }
 }
+
+/* —— Currículo / impressão —— */
+.cv-page {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+@media print {
+  .navbar,
+  footer,
+  .breadcrumb,
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+
+  .container {
+    max-width: none !important;
+    padding: 0 !important;
+  }
+
+  .cv-page {
+    max-width: none;
+  }
+
+  a {
+    color: #000 !important;
+    text-decoration: none !important;
+  }
+
+  .card {
+    box-shadow: none !important;
+  }
+}

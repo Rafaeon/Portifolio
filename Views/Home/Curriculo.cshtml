@@ -1,0 +1,105 @@
+@{
+    ViewData["Title"] = "Currículo";
+}
+
+<div class="cv-page">
+    <div class="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-4">
+        <div>
+            <h1 class="display-6 fw-bold mb-1">Rafael Torres</h1>
+            <p class="section-kicker mb-1">Desenvolvedor .NET Fullstack · DevOps em formação</p>
+            <p class="text-muted mb-0">
+                Florianópolis/SC · rafeltorress1@gmail.com · linkedin.com/in/rafael-torres-799523231 · github.com/Rafaeon
+            </p>
+        </div>
+        <div class="no-print d-flex gap-2">
+            <button type="button" class="btn btn-primary" onclick="window.print()">Salvar como PDF</button>
+            <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">Voltar</a>
+        </div>
+    </div>
+
+    <section class="mb-4">
+        <h2 class="h5 fw-bold border-bottom pb-2 mb-3">Resumo</h2>
+        <p class="mb-0">
+            Desenvolvedor .NET fullstack com experiência em sistemas corporativos multi-tenant, integrações
+            com ERP e CRM, stored procedures e interfaces MVC. Venho de operação e implantação, o que me dá
+            visão de negócio além do código. Estudo DevOps na prática com Proxmox, Docker, observabilidade
+            e deploy automatizado em homelab próprio.
+        </p>
+    </section>
+
+    <section class="mb-4">
+        <h2 class="h5 fw-bold border-bottom pb-2 mb-3">Experiência</h2>
+        <div class="mb-3">
+            <div class="d-flex flex-wrap justify-content-between gap-2">
+                <strong>Desenvolvedor .NET — Wyntech</strong>
+                <span class="text-muted">mar/2025 – Atual</span>
+            </div>
+            <ul class="mb-0 mt-2">
+                <li>Features em sistema ITSM multi-tenant e multi-módulo (Clean Architecture, API + BFF + MVC)</li>
+                <li>Integrações com Senior ERP e CRM via SOAP/REST e webservice DELL</li>
+                <li>Stored procedures para dashboards e correção de gargalos de performance</li>
+                <li>Filas de abertura de chamados e geração de documentos via Azure Functions</li>
+                <li>Regras de negócio: cancelamento de NF, classificação de usuários e tags em chamados</li>
+            </ul>
+        </div>
+        <div>
+            <div class="d-flex flex-wrap justify-content-between gap-2">
+                <strong>Analista Administrativo — Wyntech</strong>
+                <span class="text-muted">2023 – 2025</span>
+            </div>
+            <ul class="mb-0 mt-2">
+                <li>Implantação do sistema corporativo junto aos clientes</li>
+                <li>Mapeamento de processos e levantamento de regras de negócio</li>
+                <li>Transição planejada para desenvolvimento, com conhecimento operacional do sistema</li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="mb-4">
+        <h2 class="h5 fw-bold border-bottom pb-2 mb-3">Projetos</h2>
+        <div class="mb-3">
+            <strong>CRM – Controle de Clientes</strong>
+            <p class="mb-0 text-muted">
+                Sistema em uso real por empresa de limpeza industrial: clientes, chamados, peças, frotas,
+                alertas automáticos e API para abertura de chamados por WhatsApp/e-mail.
+            </p>
+        </div>
+        <div class="mb-3">
+            <strong>RAG – Memória Central</strong>
+            <p class="mb-0 text-muted">
+                Memória compartilhada entre agentes de IA: API + PostgreSQL/pgvector, embeddings locais,
+                busca híbrida e MCP. Recall@@5 de 88%, ~30 ms por busca e 37 testes automatizados.
+            </p>
+        </div>
+        <div class="mb-3">
+            <strong>HomeLab</strong>
+            <p class="mb-0 text-muted">
+                Dois servidores com Proxmox, Docker, observabilidade (Prometheus + Grafana), proxy reverso
+                e CI/CD via Cloudflare Tunnel.
+            </p>
+        </div>
+        <div>
+            <strong>CLICleaner (open source)</strong>
+            <p class="mb-0 text-muted">
+                Auxiliar de manutenção do Windows no terminal, em Python: limpeza em dry-run, auditoria e
+                caçador de resíduos. github.com/Rafaeon/clicleaner
+            </p>
+        </div>
+    </section>
+
+    <section class="mb-4">
+        <h2 class="h5 fw-bold border-bottom pb-2 mb-3">Habilidades</h2>
+        <p class="mb-1"><strong>Backend:</strong> C# / ASP.NET MVC, Web API / BFF (Refit), Entity Framework Core, SQL Server / SPs, Azure Functions</p>
+        <p class="mb-1"><strong>Frontend:</strong> JavaScript / jQuery, HTML / CSS, Bootstrap, Razor / CSHTML</p>
+        <p class="mb-1"><strong>Infra:</strong> Docker / Portainer, Proxmox / VMs, Linux (Zorin OS / Debian), OPNsense, Cloudflare Tunnel, Prometheus / Grafana, Nginx Proxy Manager</p>
+        <p class="mb-0"><strong>Ferramentas:</strong> Git / GitHub, GitHub Actions, Azure, AutoMapper / SOLID, Clean Architecture</p>
+    </section>
+
+    <section>
+        <h2 class="h5 fw-bold border-bottom pb-2 mb-3">Formação</h2>
+        <ul class="list-unstyled mb-0">
+            <li class="mb-2"><strong>Tecnólogo em Análise e Desenvolvimento de Sistemas</strong> — Anhanguera · jan/2023 – jul/2025</li>
+            <li><strong>Montagem e Manutenção de Microcomputadores</strong> — SENAI · jan/2014 – dez/2014</li>
+        </ul>
+    </section>
+</div>

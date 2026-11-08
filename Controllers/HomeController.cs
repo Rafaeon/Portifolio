@@ -38,6 +38,21 @@ public class HomeController : Controller
         return View();
     }
 
+    public IActionResult RAG()
+    {
+        return View();
+    }
+
+    public IActionResult CliCleaner()
+    {
+        return View();
+    }
+
+    public IActionResult Curriculo()
+    {
+        return View();
+    }
+
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {

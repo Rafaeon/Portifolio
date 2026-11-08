@@ -17,9 +17,9 @@
         <section class="mb-5">
             <h2 class="h4 mb-3">Visão Geral</h2>
             <p>
-                Infraestrutura doméstica com três servidores físicos em operação real — não um ambiente de testes,
-                mas um lab que roda mais de 10 serviços self-hosted, hospeda aplicações .NET com pipeline CI/CD,
-                tem rede segmentada com firewall dedicado e um servidor de IA local em modo backup.
+                Infraestrutura doméstica com dois servidores em operação real — não um ambiente de testes,
+                mas um lab que roda uma pilha de serviços self-hosted, hospeda aplicações .NET com pipeline CI/CD,
+                tem rede segmentada com firewall dedicado e observabilidade com Prometheus e Grafana.
             </p>
             <p>
                 O objetivo é aprender fazendo: cada serviço, cada VM e cada decisão de rede resolve um problema real
@@ -49,14 +49,11 @@
                 SWITCH[Switch Homelab]
                 NPM[Nginx Proxy<br />Manager]
                 subgraph "eva-01 (Desktop)"
-                DOCKER1[Docker Services<br />Jellyfin, Nextcloud<br />Paperless, Immich<br />Grafana, Uptime Kuma<br />Open WebUI]
-                SQL[(SQL Server)]
+                DOCKER1[Docker Services<br />Jellyfin, Nextcloud<br />Paperless, Immich<br />Gitea, Grafana, Homepage<br />SQL Server, MongoDB]
+                SQL[(PostgreSQL / SQL Server)]
                 end
                 subgraph "eva-02 (ThinkCentre)"
-                DOCKER2[docker-vm<br />CRM HLG + PRD<br />Portfólio]
-                end
-                subgraph "eva-03 (Dell Inspiron)"
-                OLLAMA[Ollama<br />IA Local]
+                DOCKER2[docker-vm<br />Portfólio · CRM HLG/PRD<br />API do RAG]
                 end
                 end
 
@@ -71,10 +68,8 @@
                                 SWITCH <--> NPM
                                 NPM <--> DOCKER1
                                 NPM <--> DOCKER2
-                                SWITCH <--> OLLAMA
                                 DOCKER1 --> SQL
                                 DOCKER2 -->|SQL| SQL
-                                DOCKER1 -->|API| OLLAMA
             </div>
             <div class="card mt-3">
                 <div class="card-body">
@@ -82,7 +77,7 @@
                     <ul class="mb-0">
                         <li><strong>Serviços HTTP:</strong> Internet → Cloudflare → cloudflared → NPM → Serviço</li>
                         <li><strong>Cockpit/SSH:</strong> Internet → Cloudflare → cloudflared → Serviço (direto)</li>
-                        <li><strong>IA Local:</strong> Open WebUI (eva-01) → API Ollama (eva-03) via LAN</li>
+                        <li><strong>RAG:</strong> agentes → API (eva-02) → PostgreSQL/pgvector (eva-01) via LAN</li>
                     </ul>
                 </div>
             </div>
@@ -91,7 +86,7 @@
         <section class="mb-5">
             <h2 class="h4 mb-3">Servidores</h2>
             <div class="row g-3">
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="card h-100 border-primary">
                         <div class="card-header bg-primary text-white">
                             <h5 class="card-title mb-0">eva-01 (Desktop)</h5>
@@ -106,16 +101,16 @@
                             </ul>
                             <p><strong>Serviços:</strong></p>
                             <ul>
-                                <li>Jellyfin, Nextcloud, Paperless</li>
-                                <li>Immich, Grafana, Uptime Kuma</li>
-                                <li>AdGuard Home, Gitea</li>
-                                <li>SQL Server</li>
-                                <li>Open WebUI (porta 3014)</li>
+                                <li>Jellyfin, Nextcloud, Paperless-NGX</li>
+                                <li>Immich, Gitea, RomM</li>
+                                <li>AdGuard Home, Homepage</li>
+                                <li>SQL Server, MongoDB</li>
+                                <li>Prometheus, Grafana, Uptime Kuma</li>
                             </ul>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="card h-100 border-success">
                         <div class="card-header bg-success text-white">
                             <h5 class="card-title mb-0">eva-02 (ThinkCentre M93p)</h5>
@@ -131,29 +126,7 @@
                             <p><strong>VMs:</strong></p>
                             <ul>
                                 <li><strong>OPNsense:</strong> 4 cores, 4GB RAM — firewall</li>
-                                <li><strong>docker-vm:</strong> 2 cores, 2GB RAM — apps .NET</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card h-100 border-warning">
-                        <div class="card-header bg-warning text-dark">
-                            <h5 class="card-title mb-0">eva-03 (Dell Inspiron 7472)</h5>
-                        </div>
-                        <div class="card-body">
-                            <p><strong>SO:</strong> Ubuntu Server (bare metal)</p>
-                            <p><strong>Especificações:</strong></p>
-                            <ul>
-                                <li>CPU: Intel i5-8250U</li>
-                                <li>RAM: 8GB</li>
-                                <li>GPU: GeForce MX150 (2GB)</li>
-                            </ul>
-                            <p><strong>Serviços:</strong></p>
-                            <ul>
-                                <li><strong>Ollama:</strong> API de inferência local (porta 11434) — modo backup</li>
-                                <li>qwen2.5-coder:7b</li>
-                                <li>deepseek-r1:8b (Q4_K_M)</li>
+                                <li><strong>docker-vm:</strong> 2 cores, 2GB RAM — portfólio, CRM HLG/PRD, apps .NET e API do RAG</li>
                             </ul>
                         </div>
                     </div>
@@ -213,6 +186,7 @@
                         A solução foi usar Cloudflare Tunnel como canal de SSH: o GitHub Actions instala o
                         <code>cloudflared</code>, abre um túnel autenticado até o servidor e executa o deploy.
                         Resultado: pipeline completamente automatizado, zero portas expostas, zero dependência de IP fixo.
+                        O mesmo fluxo faz o deploy do portfólio, do CRM HLG, do CRM PRD e da API do RAG.
                     </p>
                     <p class="card-text mb-0">
                         Com a migração para o <strong>Nginx Proxy Manager</strong>, o <code>cloudflared</code> agora
@@ -224,22 +198,22 @@
         </section>
 
         <section class="mb-5">
-            <p class="section-kicker">Homelab</p>
-            <h2 class="section-title">IA Local — Ollama (backup)</h2>
+            <p class="section-kicker">Observabilidade</p>
+            <h2 class="section-title">Nível 3: enxergar antes de quebrar</h2>
             <p class="prose-width">
-                O eva-03 mantém Ollama + Open WebUI prontos na LAN como <strong>backup local</strong> de inferência.
-                O uso diário de IA no fluxo de dev acontece em ferramentas de orquestração de agentes
-                (MiMoCode e chats free via MCP) — o lab local é reserva quando a nuvem/conta externa não resolve.
+                O roadmap tem cinco níveis. O terceiro foi o que mais mudou o jogo: antes eu descobria
+                problema quando algo parava de responder; agora vejo a métrica antes de virar incidente.
             </p>
             <div class="row g-3 mt-2">
                 <div class="col-md-6">
                     <div class="card h-100">
                         <div class="card-body">
-                            <h5 class="card-title">Arquitetura</h5>
+                            <h5 class="card-title">Métricas</h5>
                             <ul class="mb-0">
-                                <li><strong>eva-03:</strong> Ollama rodando via systemd nativo</li>
-                                <li><strong>eva-01:</strong> Open WebUI como interface</li>
-                                <li><strong>Comunicação:</strong> API REST via LAN</li>
+                                <li><strong>Prometheus + Grafana</strong> com node_exporter nos hosts</li>
+                                <li><strong>cAdvisor</strong> para métricas por container</li>
+                                <li><strong>blackbox exporter</strong> para probes HTTP e ICMP</li>
+                                <li>Dashboards de visão geral, por host e por container</li>
                             </ul>
                         </div>
                     </div>
@@ -247,16 +221,27 @@
                 <div class="col-md-6">
                     <div class="card h-100">
                         <div class="card-body">
-                            <h5 class="card-title">Modelos</h5>
+                            <h5 class="card-title">Heartbeat e visão única</h5>
                             <ul class="mb-0">
-                                <li><strong>qwen2.5-coder:7b</strong> — código e programação</li>
-                                <li><strong>deepseek-r1:8b</strong> — raciocínio (Q4_K_M)</li>
-                                <li><em>Pendente:</em> qwen2.5, nomic-embed-text</li>
+                                <li><strong>Uptime Kuma</strong> para heartbeat e alertas de queda</li>
+                                <li><strong>Homepage</strong> (gethomepage.dev) como single pane of glass</li>
+                                <li>Próximo passo: <strong>Loki</strong> para logs centralizados</li>
+                                <li>Depois: alertas mais elaborados no Telegram</li>
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
+        </section>
+
+        <section class="mb-5">
+            <p class="section-kicker">Aplicações</p>
+            <h2 class="section-title">O que roda em produção</h2>
+            <ul class="mb-0">
+                <li><strong>Portfólio</strong> — este site, em container no eva-02</li>
+                <li><strong>CRM HLG e CRM PRD</strong> — aplicação vendida para o cliente, com banco no eva-01</li>
+                <li><strong>API do RAG</strong> — no eva-02, com PostgreSQL/pgvector no eva-01; os agentes acessam via MCP</li>
+            </ul>
         </section>
 
         <section class="mb-5">
@@ -269,9 +254,10 @@
                 <span class="badge bg-warning text-dark">Cloudflare Tunnels</span>
                 <span class="badge bg-primary">GitHub Actions</span>
                 <span class="badge bg-dark">Linux</span>
-                <span class="badge bg-secondary">SQL Server</span>
-                <span class="badge-stack"><i class="devicon-ollama-plain" aria-hidden="true"></i> Ollama (backup)</span>
-                <span class="badge bg-success">Open WebUI</span>
+                <span class="badge bg-secondary">SQL Server / PostgreSQL</span>
+                <span class="badge bg-warning text-dark">Prometheus / Grafana</span>
+                <span class="badge bg-info">Uptime Kuma</span>
+                <span class="badge bg-success">Homepage</span>
             </div>
         </section>
 
@@ -279,19 +265,19 @@
             <h2 class="h4 mb-3">Planos Futuros</h2>
             <ul class="list-group">
                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                    Backup automatizado do SQL Server — hoje o banco não tem rotina de backup, o que é o maior risco real do ambiente
+                    Loki + logs centralizados
                     <span class="badge bg-warning text-dark">Prioridade 1</span>
                 </li>
                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                    Tailscale como fallback de acesso — redundância para quando o Cloudflare Tunnel não estiver disponível
+                    Alertas automatizados no Telegram
                     <span class="badge bg-info">Prioridade 2</span>
                 </li>
                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                    Snapshots automáticos no Proxmox — ponto de restauração rápido para as VMs em caso de falha
+                    Widgets de Portainer, Proxmox e OPNsense no Homepage
                     <span class="badge bg-secondary">Prioridade 3</span>
                 </li>
                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                    Expandir modelos Ollama — testar qwen2.5 e nomic-embed-text para embeddings
+                    Backup automatizado do SQL Server com retenção
                     <span class="badge bg-primary">Prioridade 4</span>
                 </li>
             </ul>

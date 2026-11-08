@@ -12,19 +12,23 @@
         </nav>
 
         <p class="section-kicker">Case study · produto em uso</p>
-        <h1 class="display-6 fw-bold mb-3">CRM - Controle de Clientes</h1>
+        <h1 class="display-6 fw-bold mb-3">CRM – Controle de Clientes</h1>
 
         <section class="mb-5">
             <h2 class="h4 mb-3">Visão Geral</h2>
             <p>
                 Sistema CRM desenvolvido do zero, entregue e em uso real por uma empresa do segmento de limpeza industrial.
-                A aplicação cobre todo o fluxo interno da operação — clientes, chamados, estoque e alertas automáticos —
+                A aplicação cobre todo o fluxo interno da operação — clientes, chamados, peças, frotas e alertas automáticos —
                 com uma API separada para integração com canais externos de atendimento.
             </p>
             <p>
                 O projeto nasceu de uma demanda real: a empresa precisava de um sistema que se adaptasse ao processo dela,
                 não o contrário. Foi desenvolvido, implantado e é mantido de forma independente.
             </p>
+            <div class="alert alert-info">
+                <strong>Sistema privado:</strong> a aplicação atende os usuários da empresa e não possui demo pública.
+                As decisões de arquitetura estão documentadas abaixo.
+            </div>
         </section>
 
         <section class="mb-5">
@@ -49,6 +53,14 @@
                 <div class="col-md-6">
                     <div class="card h-100">
                         <div class="card-body">
+                            <h5 class="card-title">Controle de Frotas</h5>
+                            <p class="card-text mb-0">Gestão de veículos e equipamentos vinculados aos clientes e chamados, com histórico de uso e manutenção.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-body">
                             <h5 class="card-title">Abertura via WhatsApp/E-mail</h5>
                             <p class="card-text mb-0">API dedicada para clientes externos abrirem chamados pelos canais que já usam — sem precisar acessar o sistema.</p>
                         </div>
@@ -58,7 +70,7 @@
                     <div class="card h-100">
                         <div class="card-body">
                             <h5 class="card-title">Alertas Automáticos de Estoque</h5>
-                            <p class="card-text mb-0">Serviço de background que monitora o estoque e dispara e-mails automáticos quando itens ficam abaixo do nível ideal — sem intervenção manual.</p>
+                            <p class="card-text mb-0">Serviço de background que monitora o estoque de peças e dispara e-mails automáticos quando itens ficam abaixo do nível ideal — sem intervenção manual.</p>
                         </div>
                     </div>
                 </div>
@@ -123,7 +135,7 @@
                             <ul>
                                 <li><strong>Função:</strong> Interface central para toda a operação interna da empresa</li>
                                 <li><strong>Features:</strong> CRUD completo, busca e filtros, relatórios com exportação CSV</li>
-                                <li><strong>Escopo:</strong> Clientes, chamados, estoque e histórico operacional</li>
+                                <li><strong>Escopo:</strong> Clientes, chamados, peças, frotas e histórico operacional</li>
                             </ul>
                         </div>
                     </div>
@@ -154,8 +166,8 @@
                         <div class="accordion-body">
                             <ul>
                                 <li><strong>Tipo:</strong> Serviço de background (hosted service)</li>
-                                <li><strong>Função:</strong> Monitorar estoque continuamente e notificar responsáveis</li>
-                                <li><strong>Gatilho:</strong> Item abaixo do estoque mínimo definido</li>
+                                <li><strong>Função:</strong> Monitorar o estoque de peças continuamente e notificar responsáveis</li>
+                                <li><strong>Gatilho:</strong> Peça abaixo do estoque mínimo definido</li>
                                 <li><strong>Ação:</strong> Disparo automático de e-mail de alerta</li>
                             </ul>
                         </div>

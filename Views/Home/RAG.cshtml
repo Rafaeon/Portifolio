@@ -1,0 +1,184 @@
+@{
+    ViewData["Title"] = "RAG – Memória Central";
+}
+
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Início</a></li>
+                <li class="breadcrumb-item active">RAG – Memória Central</li>
+            </ol>
+        </nav>
+
+        <p class="section-kicker">IA local · projeto próprio</p>
+        <h1 class="display-6 fw-bold mb-3">RAG – Memória Central</h1>
+
+        <section class="mb-5">
+            <h2 class="h4 mb-3">Visão Geral</h2>
+            <p>
+                Toda sessão nova de um agente de IA começava do zero: os mesmos erros, as mesmas dúvidas,
+                as mesmas explicações sobre o homelab repetidas vinte vezes. O RAG nasceu para ser uma
+                memória compartilhada entre mim e os agentes que trabalham comigo.
+            </p>
+            <p>
+                Não é um chatbot nem um Notion. É uma base de conhecimento única — projetos, runbooks,
+                decisões e preferências — que os agentes consultam e alimentam via MCP. Tudo self-hosted,
+                na LAN e com custo zero de API.
+            </p>
+            <div class="alert alert-info">
+                <strong>Onde roda:</strong> banco PostgreSQL/pgvector no eva-01 e API em container no eva-02,
+                dentro da VM Docker. Os agentes conversam com a API através de MCP.
+            </div>
+        </section>
+
+        <section class="mb-5">
+            <h2 class="h4 mb-3">Como funciona</h2>
+            <div class="mermaid">
+                graph LR
+                A[Agentes de IA] -->|MCP| B[API RAG<br />ASP.NET Core]
+                B -->|chunking + embedding| C[Embeddings ONNX<br />local · 384 dims]
+                B -->|busca híbrida| D[(PostgreSQL<br />pgvector + HNSW)]
+                E[Backup diário<br />3h30 · 7 dias] --> D
+            </div>
+            <div class="row g-3 mt-3">
+                <div class="col-md-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">API + PostgreSQL</h5>
+                            <p class="card-text mb-0">Fonte da verdade. Quem decide o que persiste é a API, não o agente.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">MCP</h5>
+                            <p class="card-text mb-0">A ponte. O agente pede “busca isso” ou “cria aquilo” e o MCP conversa com a API.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">RAG de verdade</h5>
+                            <p class="card-text mb-0">Recuperação contextual: trechos relevantes sempre acompanhados da fonte.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-5">
+            <h2 class="h4 mb-3">O que foi construído</h2>
+            <ul>
+                <li><strong>API CRUD</strong> com JWT, papéis de admin e leitor, rate limiting e auditoria de quem fez o quê</li>
+                <li><strong>Chunking automático</strong> — texto fatiado em pedaços de ~1500 caracteres com overlap</li>
+                <li><strong>Embeddings locais</strong> de 384 dimensões via ONNX multilingual, sem chamar API de terceiros</li>
+                <li><strong>Busca semântica</strong> com pgvector e índice HNSW</li>
+                <li><strong>Busca híbrida</strong> (texto + semântica) com Reciprocal Rank Fusion</li>
+                <li><strong>Backup automático</strong> diário às 3h30, com retenção de 7 dias</li>
+                <li><strong>Health check, logs de auditoria</strong> e deploy Docker no eva-02</li>
+            </ul>
+        </section>
+
+        <section class="mb-5">
+            <p class="section-kicker">Golden set</p>
+            <h2 class="section-title">Números</h2>
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <div class="card h-100 text-center">
+                        <div class="card-body">
+                            <p class="display-6 fw-bold text-primary mb-1">88%</p>
+                            <p class="text-muted mb-0">Recall@@5 — a resposta certa estava no top 5 em 7 de 8 perguntas</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 text-center">
+                        <div class="card-body">
+                            <p class="display-6 fw-bold text-primary mb-1">30 ms</p>
+                            <p class="text-muted mb-0">latência média por busca</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 text-center">
+                        <div class="card-body">
+                            <p class="display-6 fw-bold text-primary mb-1">37</p>
+                            <p class="text-muted mb-0">testes automatizados passando</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p class="text-muted mt-3 mb-0">
+                O Recall@@1 de 25% mostra que o ranking do topo ainda pode ser calibrado — mas a resposta
+                certa quase sempre está entre os primeiros resultados, o que já resolve o dia a dia.
+            </p>
+        </section>
+
+        <section class="mb-5">
+            <h2 class="h4 mb-3">Decisões Técnicas</h2>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Embeddings locais</h5>
+                    <p class="card-text">Nada de chamar OpenAI ou Cohere para gerar vetores. O modelo roda dentro da API,
+                    no próprio servidor: custo zero e privacidade total.</p>
+                </div>
+            </div>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">pgvector em vez de cálculo no C#</h5>
+                    <p class="card-text">A busca semântica antes carregava tudo para a memória e comparava vetor por vetor.
+                    Com o índice HNSW, isso virou O(log n) — mesmo resultado, muito mais rápido.</p>
+                </div>
+            </div>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Conteúdo é dado, não instrução</h5>
+                    <p class="card-text">Tudo que o RAG retorna vem marcado como referência. O agente não executa o que
+                    está na memória — ele lê e decide.</p>
+                </div>
+            </div>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Banco e API em máquinas diferentes</h5>
+                    <p class="card-text">O banco mora no eva-01 e a API no eva-02. Se uma cair, a outra não arrasta junto.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-5">
+            <h2 class="h4 mb-3">O que aprendi</h2>
+            <ul class="mb-0">
+                <li><strong>Memória de agente sem estrutura é ruído.</strong> Guardar qualquer coisa sem chunking,
+                    embedding e busca é pior do que não ter nada.</li>
+                <li><strong>Busca híbrida faz diferença real.</strong> Texto puro não entende sinônimos; semântica pura
+                    erra termos exatos. Juntas, cada uma cobre o buraco da outra.</li>
+                <li><strong>Medir é metade do trabalho.</strong> O golden set com perguntas em linguagem natural mostrou
+                    onde funciona — e onde ainda não.</li>
+            </ul>
+        </section>
+
+        <section class="mb-5">
+            <h2 class="h4 mb-3">O que vem por aí</h2>
+            <ul class="mb-0">
+                <li>Calibrar o RRF para melhorar o Recall@@1</li>
+                <li>Ingestão em lote de documentos do repositório (ADRs, runbooks, docs)</li>
+                <li>Dashboard simples para visualizar o que está na memória</li>
+            </ul>
+        </section>
+
+        <section class="mb-5">
+            <h2 class="h4 mb-3">Stack</h2>
+            <div class="d-flex flex-wrap gap-2">
+                <span class="badge bg-primary">ASP.NET Core</span>
+                <span class="badge bg-success">PostgreSQL</span>
+                <span class="badge bg-info">pgvector / HNSW</span>
+                <span class="badge bg-warning text-dark">ONNX</span>
+                <span class="badge bg-danger">MCP</span>
+                <span class="badge bg-dark">Docker</span>
+            </div>
+        </section>
+    </div>
+</div>

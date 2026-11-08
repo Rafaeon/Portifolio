@@ -1,0 +1,134 @@
+@{
+    ViewData["Title"] = "CLICleaner";
+}
+
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Início</a></li>
+                <li class="breadcrumb-item active">CLICleaner</li>
+            </ol>
+        </nav>
+
+        <p class="section-kicker">Open source · CLI</p>
+        <h1 class="display-6 fw-bold mb-3">CLICleaner</h1>
+
+        <section class="mb-5">
+            <h2 class="h4 mb-3">Visão Geral</h2>
+            <p>
+                Depois de testar ferramentas, desinstalar programas e mexer no que não devia, sobrava sempre
+                a mesma faxina manual no Windows: pastas soltas em <code>C:\</code>, drivers antigos, registro
+                órfão, cache de navegador e temporários.
+            </p>
+            <p>
+                O CLICleaner é um auxiliar de manutenção no terminal. Não é antivírus e não substitui o
+                Windows Defender — é o colega que ajuda a higienizar o sistema e aponta o que merece uma olhada.
+            </p>
+        </section>
+
+        <section class="mb-5">
+            <h2 class="h4 mb-3">O que tem hoje</h2>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Limpeza em dry-run</h5>
+                            <p class="card-text mb-0">Mostra o que seria apagado ou aplica de verdade, sempre com confirmação.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Auditoria</h5>
+                            <p class="card-text mb-0">Autostart, serviços, tarefas agendadas, portas em escuta e executáveis sem assinatura.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Caçador de resíduos</h5>
+                            <p class="card-text mb-0">Pastas órfãs, chaves de desinstalação quebradas e serviços apontando para arquivos que não existem mais.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Espaço em disco</h5>
+                            <p class="card-text mb-0">Mostra o que está ocupando o HD antes de qualquer remoção.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">VirusTotal por hash</h5>
+                            <p class="card-text mb-0">Consulta reputação sem enviar o arquivo — só o hash sai da máquina.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Relatório JSON e HTML</h5>
+                            <p class="card-text mb-0">Gera um snapshot do estado do sistema para comparar depois.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-5">
+            <h2 class="h4 mb-3">Segurança por padrão</h2>
+            <ul class="mb-0">
+                <li><strong>Dry-run por padrão</strong> — nada some sem você mandar</li>
+                <li><strong>Filtro de idade</strong> — só remove arquivo antigo, nunca pasta inteira de uma vez</li>
+                <li><strong>Resíduo é somente leitura</strong> — itens em Program Files/AppData são marcados como “revisar”, não “ok apagar”</li>
+                <li><strong>Whitelist</strong> para ferramentas de Windows customizado (Ghost Spectre / AtlasOS)</li>
+                <li><strong>Scan no VirusTotal por hash</strong> — o arquivo não é enviado</li>
+            </ul>
+        </section>
+
+        <section class="mb-5">
+            <h2 class="h4 mb-3">Escolhas Técnicas</h2>
+            <ul class="mb-0">
+                <li><strong>Python 3.12 + Typer + Rich</strong> — CLI legível sem stack pesada</li>
+                <li><strong>Menu numérico</strong> — digita <code>clicleaner</code> e escolhe uma opção</li>
+                <li><strong>Instalação global com uv tool install</strong></li>
+                <li><strong>CI com ruff e pyright</strong> e tema unificado de terminal</li>
+            </ul>
+        </section>
+
+        <section class="mb-5">
+            <h2 class="h4 mb-3">Código aberto</h2>
+            <p>O projeto está no GitHub, com CI, README e um banner em ASCII que não quebra em fonte nenhuma.</p>
+            <a href="https://github.com/Rafaeon/clicleaner" target="_blank" rel="noopener" class="btn btn-outline-primary">
+                Ver no GitHub →
+            </a>
+        </section>
+
+        <section class="mb-5">
+            <h2 class="h4 mb-3">O que vem por aí</h2>
+            <ul class="mb-0">
+                <li>Scan agendado</li>
+                <li>Upload opcional no VirusTotal</li>
+                <li>Relatório com gráfico</li>
+            </ul>
+        </section>
+
+        <section class="mb-5">
+            <h2 class="h4 mb-3">Stack</h2>
+            <div class="d-flex flex-wrap gap-2">
+                <span class="badge bg-primary">Python 3.12</span>
+                <span class="badge bg-success">Typer</span>
+                <span class="badge bg-info">Rich</span>
+                <span class="badge bg-warning text-dark">Windows</span>
+                <span class="badge bg-danger">ruff</span>
+                <span class="badge bg-dark">pyright</span>
+            </div>
+        </section>
+    </div>
+</div>
