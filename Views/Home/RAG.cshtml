@@ -77,43 +77,57 @@
                 <li><strong>Embeddings locais</strong> de 384 dimensões via ONNX multilingual, sem chamar API de terceiros</li>
                 <li><strong>Busca semântica</strong> com pgvector e índice HNSW</li>
                 <li><strong>Busca híbrida</strong> (texto + semântica) com Reciprocal Rank Fusion</li>
+                <li><strong>Busca textual com FTS do PostgreSQL</strong> — coluna <code>tsvector</code> gerada, índice GIN, stemming em português e ranking por relevância, com rollback por variável de ambiente</li>
                 <li><strong>Backup automático</strong> diário às 3h30, com retenção de 7 dias</li>
                 <li><strong>Health check, logs de auditoria</strong> e deploy Docker no eva-02</li>
+                <li><strong>Dashboard de leitura</strong> — KPIs, gráficos por categoria e projeto, busca no conteúdo e modal com o texto completo, consumindo só a API</li>
             </ul>
         </section>
 
         <section class="mb-5">
-            <p class="section-kicker">Golden set</p>
+            <p class="section-kicker">Benchmark de 24/11/2026</p>
             <h2 class="section-title">Números</h2>
             <div class="row g-3">
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="card h-100 text-center">
                         <div class="card-body">
-                            <p class="display-6 fw-bold text-primary mb-1">88%</p>
-                            <p class="text-muted mb-0">Recall@@5 — a resposta certa estava no top 5 em 7 de 8 perguntas</p>
+                            <p class="display-6 fw-bold text-primary mb-1">100%</p>
+                            <p class="text-muted mb-0">Recall@@5 — o item certo no top 5 em 26 de 26 consultas</p>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="card h-100 text-center">
                         <div class="card-body">
-                            <p class="display-6 fw-bold text-primary mb-1">30 ms</p>
-                            <p class="text-muted mb-0">latência média por busca</p>
+                            <p class="display-6 fw-bold text-primary mb-1">73%</p>
+                            <p class="text-muted mb-0">Recall@@1 — 19 de 26 já na primeira posição</p>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="card h-100 text-center">
                         <div class="card-body">
-                            <p class="display-6 fw-bold text-primary mb-1">37</p>
+                            <p class="display-6 fw-bold text-primary mb-1">~10 ms</p>
+                            <p class="text-muted mb-0">latência média por busca, medida na LAN</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card h-100 text-center">
+                        <div class="card-body">
+                            <p class="display-6 fw-bold text-primary mb-1">55</p>
                             <p class="text-muted mb-0">testes automatizados passando</p>
                         </div>
                     </div>
                 </div>
             </div>
             <p class="text-muted mt-3 mb-0">
-                O Recall@@1 de 25% mostra que o ranking do topo ainda pode ser calibrado — mas a resposta
-                certa quase sempre está entre os primeiros resultados, o que já resolve o dia a dia.
+                Medido contra o acervo real (39 itens, 192 chunks), com 26 consultas de gabarito manual.
+                Antes da busca textual com FTS do PostgreSQL, 16 de 26 acertavam no top 5 e 10 voltavam
+                vazias — frases como “restaurar backup do banco” e “portas do desktop” não encontravam nada.
+                Agora todas retornam, e a busca textual ficou ~17× mais rápida no banco (0,18 ms contra
+                3,1 ms por consulta). O Recall@@1 de 73% é o que ainda dá margem: 7 consultas trazem a
+                resposta certa, mas não em primeiro.
             </p>
         </section>
 
@@ -130,7 +144,9 @@
                 <div class="card-body">
                     <h5 class="card-title">pgvector em vez de cálculo no C#</h5>
                     <p class="card-text">A busca semântica antes carregava tudo para a memória e comparava vetor por vetor.
-                    Com o índice HNSW, isso virou O(log n) — mesmo resultado, muito mais rápido.</p>
+                    Com o índice HNSW a comparação saiu do C# e virou índice — muito mais rápido. A ressalva honesta:
+                    HNSW é aproximado, então não entrego o mesmo resultado do cálculo exato; num acervo deste tamanho,
+                    o ganho medido veio de parar de varrer tudo.</p>
                 </div>
             </div>
             <div class="card mb-3">
@@ -143,7 +159,8 @@
             <div class="card mb-3">
                 <div class="card-body">
                     <h5 class="card-title">Banco e API em máquinas diferentes</h5>
-                    <p class="card-text">O banco mora no eva-01 e a API no eva-02. Se uma cair, a outra não arrasta junto.</p>
+                    <p class="card-text">O banco mora no eva-01 e a API no eva-02. A separação deixa o deploy independente —
+                    mas o banco é o ponto único de falha do RAG: se o eva-01 cair, a busca para mesmo com a API de pé.</p>
                 </div>
             </div>
         </section>
@@ -163,9 +180,9 @@
         <section class="mb-5">
             <h2 class="h4 mb-3">O que vem por aí</h2>
             <ul class="mb-0">
-                <li>Calibrar o RRF para melhorar o Recall@@1</li>
+                <li>Agregar os chunks por item antes do RRF — hoje um mesmo item pode ocupar as cinco posições da busca híbrida</li>
+                <li>Busca insensível a acento (<code>unaccent</code>): “memoria” ainda não encontra “memória”</li>
                 <li>Ingestão em lote de documentos do repositório (ADRs, runbooks, docs)</li>
-                <li>Dashboard simples para visualizar o que está na memória</li>
             </ul>
         </section>
 
